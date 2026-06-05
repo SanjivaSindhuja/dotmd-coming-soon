@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DotMD — real-time Markdown collaboration & review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* ============================================================
+     TOKEN LAYER — raw values live here only (DESIGN_SYSTEM §2–§6).
+     Components reference semantic tokens, never raw hex/ms.
+     ============================================================ */
+  :root{
+    /* ---- raw palette: Flexoki base (§2.1) ---- */
+    --paper:#FFFCF0; --base-50:#F2F0E5; --base-100:#E6E4D9; --base-150:#DAD8CE;
+    --base-200:#CECDC3; --base-300:#B7B5AC; --base-500:#878580; --base-600:#6F6E69;
+    --base-700:#575653; --base-800:#403E3C; --base-850:#343331; --base-900:#282726;
+    --base-950:#1C1B1A; --black:#100F0F;
+    /* ---- raw palette: Flexoki accents (§2.2) ---- */
+    --blue-600:#205EA6; --blue-400:#4385BE; --blue-700:#1A4F8C; --blue-300:#66A0C8; --blue-50:#E1ECEB;
+    --red-600:#AF3029;  --red-400:#D14D41;
+    --green-600:#66800B;--green-400:#879A39;
+    --yellow-600:#AD8301;--yellow-400:#D0A215;
+
+    /* ---- fonts (§3 + landing display serif) ---- */
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --serif:'Instrument Serif',Georgia,serif;
+    --sans:'Hanken Grotesk',system-ui,sans-serif;
+
+    /* ---- radius (§4.2) ---- */
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-full:9999px;
+
+    /* ---- motion (§6, mirror of ANIMATIONS) ---- */
+    --motion-instant:0ms; --motion-fast:120ms; --motion-base:200ms; --motion-slow:320ms;
+    --ease-out:cubic-bezier(0,0,0.2,1);
+    --ease-in:cubic-bezier(0.4,0,1,1);
+    --ease-standard:cubic-bezier(0.4,0,0.2,1);
+
+    /* ---- icon sizes (§8) ---- */
+    --icon-sm:16px; --icon-md:20px; --icon-lg:24px;
+
+    /* ====== SEMANTIC MAP — LIGHT (§2.3, §2.4) ====== */
+    --bg-canvas:var(--paper);
+    --bg-surface:var(--base-50);
+    --bg-raised:var(--base-100);
+    --bg-sunken:var(--base-100);
+    --border:var(--base-100);
+    --border-hover:var(--base-150);
+    --border-strong:var(--base-200);
+    --text-primary:var(--black);
+    --text-secondary:var(--base-600);
+    --text-muted:var(--base-300);
+    --text-on-accent:var(--paper);
+    --accent:var(--blue-600);
+    --accent-hover:var(--blue-700);
+    --accent-subtle:var(--blue-50);
+    --success:var(--green-600);
+    --focus-ring:var(--blue-600);
+    /* derived from accent for tints/rings */
+    --accent-rgb:32,94,166;
+    --grain-opacity:.5;
+  }
+
+  /* ====== SEMANTIC MAP — DARK (§2.3, §2.4) ====== */
+  :root[data-theme="dark"]{
+    --bg-canvas:var(--black);
+    --bg-surface:var(--base-950);
+    --bg-raised:var(--base-900);
+    --bg-sunken:var(--base-950);
+    --border:var(--base-900);
+    --border-hover:var(--base-850);
+    --border-strong:var(--base-800);
+    --text-primary:var(--base-200);
+    --text-secondary:var(--base-500);
+    --text-muted:var(--base-700);
+    --text-on-accent:var(--paper);
+    --accent:var(--blue-400);
+    --accent-hover:var(--blue-300);
+    --accent-subtle:rgba(67,133,190,0.16);
+    --success:var(--green-400);
+    --focus-ring:var(--blue-400);
+    --accent-rgb:67,133,190;
+    --grain-opacity:.22;
+  }
+  /* system preference when no explicit override */
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]):not([data-theme="dark"]){
+      --bg-canvas:var(--black); --bg-surface:var(--base-950); --bg-raised:var(--base-900);
+      --bg-sunken:var(--base-950); --border:var(--base-900); --border-hover:var(--base-850);
+      --border-strong:var(--base-800); --text-primary:var(--base-200);
+      --text-secondary:var(--base-500); --text-muted:var(--base-700);
+      --accent:var(--blue-400); --accent-hover:var(--blue-300);
+      --accent-subtle:rgba(67,133,190,0.16); --success:var(--green-400);
+      --focus-ring:var(--blue-400); --accent-rgb:67,133,190; --grain-opacity:.22;
+    }
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg-canvas);
+    color:var(--text-primary);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+    transition:background var(--motion-base) var(--ease-standard),color var(--motion-base) var(--ease-standard);
+  }
+  /* paper grain */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:var(--grain-opacity);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+  :focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px;border-radius:var(--radius-sm)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;position:relative;z-index:2}
+  /* Lucide icon defaults (§8): currentColor, stroke 2 */
+  [data-lucide]{width:var(--icon-md);height:var(--icon-md);stroke-width:2;vertical-align:middle}
+  .i-sm{width:var(--icon-sm);height:var(--icon-sm)}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:100;
+    background:color-mix(in srgb,var(--bg-canvas) 82%,transparent);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;flex-direction:column;gap:1px;line-height:1}
+  .logo-mark{font-family:var(--mono);font-weight:800;font-size:23px;letter-spacing:-.04em;display:flex;align-items:center;gap:2px}
+  .logo .hash{color:var(--accent)}
+  .logo-mark .c{color:var(--accent)}
+  .logo .blink{display:inline-block;width:9px;height:1.05em;background:var(--accent);margin-left:3px;transform:translateY(2px);animation:blink 1.1s steps(1) infinite}
+  .logo-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase;padding-left:1px}
+  @keyframes blink{50%{opacity:0}}
+  .nav-links{display:flex;align-items:center;gap:28px;font-size:14.5px;font-weight:500}
+  .nav-links a{color:var(--text-secondary);text-decoration:none;transition:color var(--motion-fast) var(--ease-out)}
+  .nav-links a:hover{color:var(--accent)}
+  .theme-toggle{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border-radius:var(--radius-sm);cursor:pointer;
+    background:transparent;border:1px solid var(--border);color:var(--text-secondary);
+    transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out);
+  }
+  .theme-toggle:hover{background:var(--bg-raised);color:var(--accent);border-color:var(--border-hover)}
+  .nav-links a.nav-cta{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:13px;font-weight:500;
+    background:var(--accent);color:#fff;
+    padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--accent);
+    text-decoration:none;transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);
+  }
+  .nav-links a.nav-cta:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#fff}
+  @media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:90px 0 56px;position:relative;text-align:center}
+  .hero h1.head,.hero .sub{margin-left:auto;margin-right:auto}
+  .hero .hero-form{margin-left:auto;margin-right:auto;justify-content:center}
+  .badge{
+    display:inline-flex;align-items:center;gap:9px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.04em;
+    color:var(--accent);background:rgba(var(--accent-rgb),.09);
+    border:1px solid rgba(var(--accent-rgb),.28);padding:6px 13px;border-radius:var(--radius-full);
+    margin-bottom:30px;
+  }
+  .badge .dot{width:6px;height:6px;border-radius:var(--radius-full);background:var(--accent);box-shadow:0 0 0 0 rgba(var(--accent-rgb),.5);animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(var(--accent-rgb),.45)}70%{box-shadow:0 0 0 7px rgba(var(--accent-rgb),0)}100%{box-shadow:0 0 0 0 rgba(var(--accent-rgb),0)}}
+
+  h1.head{
+    font-family:var(--serif);font-weight:400;
+    font-size:clamp(46px,7.4vw,92px);line-height:.98;letter-spacing:-.015em;
+    max-width:22ch;
+  }
+  h1.head .mk{color:var(--accent);font-family:var(--mono);font-size:.62em;font-weight:500;vertical-align:.18em;letter-spacing:-.03em}
+  h1.head em{font-style:italic;color:var(--accent)}
+  .sub{
+    margin-top:28px;font-size:clamp(18px,2vw,21px);color:var(--text-secondary);
+    max-width:62ch;line-height:1.55;
+  }
+  .sub b{color:var(--text-primary);font-weight:600}
+
+  .hero-form{display:flex;gap:10px;margin-top:38px;max-width:480px;flex-wrap:wrap}
+  .hero-form input{
+    flex:1;min-width:220px;font-family:var(--mono);font-size:14px;
+    padding:15px 18px;border:1px solid var(--border);background:var(--bg-sunken);
+    color:var(--text-primary);border-radius:var(--radius-sm);outline:none;
+    transition:border-color var(--motion-fast) var(--ease-out),box-shadow var(--motion-fast) var(--ease-out);
+  }
+  .hero-form input::placeholder{color:var(--text-muted)}
+  .hero-form input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-subtle)}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:14px;font-weight:500;cursor:pointer;
+    background:var(--accent);color:var(--text-on-accent);border:1px solid var(--accent);
+    padding:15px 24px;border-radius:var(--radius-sm);white-space:nowrap;
+    transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out),transform var(--motion-fast) var(--ease-out);
+  }
+  .btn:hover{background:var(--accent-hover);border-color:var(--accent-hover);transform:translateY(-1px)}
+  .form-note{margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--text-muted)}
+  .form-note .ok{color:var(--success);display:inline-flex;align-items:center;gap:6px}
+
+  /* fade-up entrance */
+  .fu{opacity:0;transform:translateY(22px);animation:fu .9s var(--ease-out) forwards}
+  @keyframes fu{to{opacity:1;transform:none}}
+
+  /* ---------- section scaffolding ---------- */
+  section{position:relative}
+  .sec-label{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .sec-label::before{content:"##";color:var(--accent);font-weight:700}
+  .sec-label.no-hash::before{content:none}
+  .sec-label.lg{font-size:16px}
+  .sec-label.hl{display:inline-flex;background:var(--accent-subtle);color:var(--accent);padding:6px 14px;border-radius:var(--radius-sm)}
+  h2.sec-head{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.4vw,52px);line-height:1.04;letter-spacing:-.01em;max-width:18ch}
+  h2.sec-head em{font-style:italic;color:var(--accent)}
+
+  /* ---------- features ---------- */
+  .features{padding:64px 0 40px}
+  .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:40px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
+  .feat{background:var(--bg-canvas);padding:34px 28px;transition:background var(--motion-base) var(--ease-standard);position:relative}
+  .feat:hover{background:var(--bg-raised)}
+  .feat .mark{display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:var(--radius-md);background:var(--accent-subtle);color:var(--accent);margin-bottom:18px}
+  .feat .mark [data-lucide]{width:22px;height:22px}
+  .feat h3{font-family:var(--serif);font-weight:400;font-size:24px;letter-spacing:-.01em;margin-bottom:10px}
+  .feat p{font-size:14.5px;color:var(--text-secondary);line-height:1.55}
+  .feat code{font-family:var(--mono);font-size:.85em;background:var(--bg-sunken);padding:1px 5px;border-radius:var(--radius-sm);color:var(--accent)}
+  @media(max-width:860px){.feat-grid{grid-template-columns:1fr 1fr}.feat:last-child{grid-column:1 / -1}}
+  @media(max-width:560px){.feat-grid{grid-template-columns:1fr}.feat:last-child{grid-column:auto}}
+
+  /* ---------- steps ---------- */
+  .steps{padding:64px 0 40px}
+  .step-row{display:grid;grid-template-columns:repeat(3,1fr);gap:36px;margin-top:46px}
+  .step{position:relative;padding-top:26px;border-top:2px solid var(--text-primary)}
+  .step .n{font-family:var(--mono);font-size:13px;color:var(--accent);font-weight:700;position:absolute;top:-11px;background:var(--bg-canvas);padding-right:10px}
+  .step h3{font-family:var(--serif);font-weight:400;font-size:26px;margin-bottom:10px;letter-spacing:-.01em}
+  .step p{font-size:15px;color:var(--text-secondary)}
+  .step code{font-family:var(--mono);font-size:.85em;background:var(--bg-sunken);padding:1px 5px;border-radius:var(--radius-sm);color:var(--accent)}
+  @media(max-width:760px){.step-row{grid-template-columns:1fr;gap:28px}}
+
+  /* ---------- developers ---------- */
+  .developers{padding:64px 0 40px}
+  .dev-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-top:40px}
+  .dev-card{border:1px solid var(--border);background:var(--bg-surface);border-radius:var(--radius-md);padding:30px 30px 32px;transition:border-color var(--motion-fast) var(--ease-out)}
+  .dev-card:hover{border-color:var(--border-strong)}
+  .dev-head{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+  .dev-avatar{width:56px;height:56px;border-radius:var(--radius-full);background:var(--accent);color:var(--text-on-accent);font-family:var(--mono);font-weight:700;font-size:21px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .dev-name{font-family:var(--serif);font-size:25px;line-height:1.05;letter-spacing:-.01em}
+  .dev-role{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--accent);text-transform:uppercase;margin-top:5px}
+  .dev-card p{font-size:15px;color:var(--text-secondary);line-height:1.62}
+  .dev-card p em{font-style:italic;color:var(--accent)}
+  @media(max-width:680px){.dev-grid{grid-template-columns:1fr}}
+
+  /* ---------- pricing ---------- */
+  .pricing{padding:64px 0 40px}
+  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:40px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
+  .price{background:var(--bg-canvas);padding:30px 24px;display:flex;flex-direction:column}
+  .price.pop{background:var(--bg-raised)}
+  .price-name{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)}
+  .price-tag{font-family:var(--serif);font-size:40px;line-height:1;margin:12px 0 2px}
+  .price-tag .per{font-family:var(--sans);font-size:13px;color:var(--text-muted)}
+  .price-pill{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:var(--accent);color:var(--text-on-accent);padding:3px 9px;border-radius:var(--radius-sm);margin-bottom:10px}
+  .price ul{list-style:none;margin:18px 0 22px;padding:0;font-size:14px;color:var(--text-secondary);flex:1}
+  .price li{padding:8px 0;border-top:1px solid var(--border);display:flex;gap:9px;line-height:1.4;align-items:flex-start}
+  .price li [data-lucide]{color:var(--accent);flex:none;margin-top:2px}
+  .price .pbtn{font-family:var(--mono);font-size:13px;font-weight:500;text-align:center;text-decoration:none;display:block;padding:12px;border-radius:var(--radius-sm);transition:background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);background:transparent;color:var(--text-primary);border:1px solid var(--text-primary)}
+  .price .pbtn:hover{background:var(--text-primary);color:var(--bg-canvas)}
+  .price .pbtn.solid{background:var(--accent);border-color:var(--accent);color:var(--text-on-accent)}
+  .price .pbtn.solid:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+  @media(max-width:860px){.price-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:520px){.price-grid{grid-template-columns:1fr}}
+
+  /* ---------- final cta ---------- */
+  .cta{padding:72px 0 80px;border-top:1px solid var(--border);text-align:center;position:relative}
+  .cta .big{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,76px);line-height:1;letter-spacing:-.015em;margin-bottom:14px}
+  .cta .big .mk{color:var(--accent);font-family:var(--mono);font-size:.5em;vertical-align:.25em}
+  .cta p{color:var(--text-secondary);max-width:42ch;margin:0 auto 36px;font-size:18px}
+  .cta .hero-form{margin:0 auto;justify-content:center}
+  .promo{display:inline-flex;align-items:center;flex-wrap:wrap;justify-content:center;gap:10px;font-family:var(--mono);font-size:13.5px;color:var(--text-secondary);background:var(--bg-surface);border:1px dashed var(--accent);padding:11px 18px;border-radius:var(--radius-sm);margin:0 auto 26px}
+  .promo b{color:var(--text-primary);font-weight:700}
+  .promo-tag{display:inline-flex;align-items:center;gap:5px;background:var(--accent);color:var(--text-on-accent);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:var(--radius-sm);font-weight:500}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--border);padding:42px 0;font-family:var(--mono);font-size:13px;color:var(--text-muted)}
+  .foot-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .foot-in .c{color:var(--accent)}
+
+  /* reduced motion (§6 / ANIMATIONS §11) */
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:0ms!important;animation-iteration-count:1!important;transition-duration:0ms!important}
+    .btn:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="logo">
+      <div class="logo-mark"><span class="hash">#</span>Dot<span class="c">MD</span></div>
+      <div class="logo-tag">from generated to great</div>
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#developers">Developer</a>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+        <i data-lucide="sun"></i>
+      </button>
+      <a href="#waitlist" class="nav-cta">Get early access</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="badge fu" style="animation-delay:.05s"><span class="dot"></span>Launching soon · join the waitlist</div>
+    <h1 class="head fu" style="animation-delay:.12s">Where humans and AI<br><em>review Markdown together.</em></h1>
+    <p class="sub fu" style="animation-delay:.2s">Your AI tools write specs, docs, and READMEs in Markdown — then review falls apart. <b>DotMD brings Google-Docs-style comments, suggested edits, and real-time collaboration to the Markdown your team and your AI agents already work in</b> — without leaving git.</p>
+
+    <div class="hero-form fu" id="form-hero" style="animation-delay:.28s">
+      <input type="email" placeholder="you@workspace.com" aria-label="email" />
+      <button class="btn">Request access <i data-lucide="arrow-right" class="i-sm"></i></button>
+    </div>
+    <div class="form-note fu" style="animation-delay:.32s">No spam. Just one note when DotMD opens its doors.</div>
+
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="wrap">
+    <div class="sec-label lg no-hash">What DotMD does</div>
+    <h2 class="sec-head">Google-Docs-grade review — <em>built for Markdown.</em></h2>
+    <div class="feat-grid">
+      <div class="feat"><span class="mark"><i data-lucide="file-text"></i></span><h3>Full-fidelity rendering</h3><p>GFM tables, code blocks, Mermaid diagrams, and math render exactly as written — no broken previews, no surprises.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="message-square"></i></span><h3>Inline comments</h3><p>Comment on any selection — a word, a sentence, a whole section — in threaded discussions with <code>@mentions</code> and resolve.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="square-pen"></i></span><h3>Suggested edits</h3><p>Propose changes track-changes style. Authors accept or reject line by line, with the full history preserved.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="highlighter"></i></span><h3>Highlights &amp; annotations</h3><p>Mark up drafts with color-coded highlights so feedback is impossible to miss and easy to act on.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="users"></i></span><h3>Real-time collaboration</h3><p>CRDT-powered editing for 25+ people at once — live cursors, instant sync, and zero merge conflicts.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="sparkles"></i></span><h3>AI participant mode</h3><p>Let AI agents join as collaborators. They read, comment, and suggest edits through the API, right alongside your team.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="history"></i></span><h3>Version history &amp; diff</h3><p>Every change is tracked. Compare versions side-by-side or inline, and roll back to any point anytime.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="share-2"></i></span><h3>Sharing &amp; roles</h3><p>Share a link with role-based access — viewer, commenter, or editor — and stay in control of every document.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="git-branch"></i></span><h3>Import, export &amp; git sync</h3><p>Bring in or ship out <code>.md</code>, <code>.docx</code>, and <code>.pdf</code>, and sync bi-directionally with GitHub and GitLab.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section class="steps" id="how">
+  <div class="wrap">
+    <div class="sec-label lg no-hash">How it works</div>
+    <h2 class="sec-head">Three steps from <em>draft</em> to <em>done.</em></h2>
+    <div class="step-row">
+      <div class="step"><span class="n">01</span><h3>Bring it in</h3><p>Paste Markdown, import <code>.md</code> or <code>.docx</code>, or sync a file straight from GitHub or GitLab.</p></div>
+      <div class="step"><span class="n">02</span><h3>Review together</h3><p>Humans and AI comment, suggest edits, and highlight in real time — threaded, resolvable, and fully tracked.</p></div>
+      <div class="step"><span class="n">03</span><h3>Resolve &amp; ship</h3><p>Accept changes, check the version diff, then export or sync back to git — formatting and history intact.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVELOPERS -->
+<section class="developers" id="developers">
+  <div class="wrap">
+    <div class="sec-label lg no-hash">The makers</div>
+    <h2 class="sec-head">Built by people <em>obsessed</em> with better AI.</h2>
+    <div class="dev-grid">
+      <div class="dev-card">
+        <div class="dev-head">
+          <div class="dev-avatar">J</div>
+          <div>
+            <div class="dev-name">Jeyanarendran</div>
+            <div class="dev-role">Founder · AI Engineer</div>
+          </div>
+        </div>
+        <p>Jeyanarendran lives at the edge of what AI can do. He's spent years building systems that turn raw model output into something people can actually trust, and he's convinced the next leap won't come from bigger models — it'll come from smarter tools built around them. For him, DotMD is that belief turned into code: in a world racing to generate more, he's focused on making what AI produces genuinely <em>great</em>.</p>
+      </div>
+      <div class="dev-card">
+        <div class="dev-head">
+          <div class="dev-avatar">V</div>
+          <div>
+            <div class="dev-name">Vignesh</div>
+            <div class="dev-role">Co-founder · Product Engineer</div>
+          </div>
+        </div>
+        <p>Vignesh is relentless about the details everyone else overlooks. He believes the future of AI belongs to the builders who sweat the last ten percent — the polish, the edge cases, the moment a tool just <em>feels</em> right. As AI reshapes how the world creates, he pours that obsession into DotMD, shaping every interaction so that working with AI-generated content feels fast, clean, and effortless.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="wrap">
+    <div class="sec-label lg no-hash">Pricing</div>
+    <h2 class="sec-head">Start free. <em>Scale when you're ready.</em></h2>
+    <div class="price-grid">
+      <div class="price">
+        <div class="price-name">Free</div>
+        <div class="price-tag">$0<span class="per"> /mo</span></div>
+        <ul>
+          <li><i data-lucide="check" class="i-sm"></i>5 documents</li>
+          <li><i data-lucide="check" class="i-sm"></i>2 collaborators</li>
+          <li><i data-lucide="check" class="i-sm"></i>Basic rendering</li>
+        </ul>
+        <a href="#waitlist" class="pbtn">Start free</a>
+      </div>
+      <div class="price pop">
+        <span class="price-pill"><i data-lucide="star" class="i-sm"></i>Most popular</span>
+        <div class="price-name">Pro</div>
+        <div class="price-tag">$5<span class="per"> /user/mo</span></div>
+        <ul>
+          <li><i data-lucide="check" class="i-sm"></i>100 documents / month</li>
+          <li><i data-lucide="check" class="i-sm"></i>Unlimited collaborators</li>
+          <li><i data-lucide="check" class="i-sm"></i>AI participant mode</li>
+          <li><i data-lucide="check" class="i-sm"></i>Version history</li>
+        </ul>
+        <a href="#waitlist" class="pbtn solid">Get early access</a>
+      </div>
+      <div class="price">
+        <div class="price-name">Team</div>
+        <div class="price-tag">$25<span class="per"> /user/mo</span></div>
+        <ul>
+          <li><i data-lucide="check" class="i-sm"></i>Unlimited documents</li>
+          <li><i data-lucide="check" class="i-sm"></i>SSO &amp; admin controls</li>
+          <li><i data-lucide="check" class="i-sm"></i>API access</li>
+          <li><i data-lucide="check" class="i-sm"></i>Priority support</li>
+        </ul>
+        <a href="#waitlist" class="pbtn">Get early access</a>
+      </div>
+      <div class="price">
+        <div class="price-name">Enterprise</div>
+        <div class="price-tag">Custom</div>
+        <ul>
+          <li><i data-lucide="check" class="i-sm"></i>On-prem deployment</li>
+          <li><i data-lucide="check" class="i-sm"></i>Custom integrations</li>
+          <li><i data-lucide="check" class="i-sm"></i>SLA guarantees</li>
+          <li><i data-lucide="check" class="i-sm"></i>Dedicated CSM</li>
+        </ul>
+        <a href="#waitlist" class="pbtn">Contact sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta" id="waitlist">
+  <div class="wrap">
+    <div class="sec-label hl no-hash">Skip the line</div>
+    <p>DotMD is opening early access in waves. Leave your email and we'll hand you the keys.</p>
+    <div class="promo"><span class="promo-tag"><i data-lucide="zap" class="i-sm"></i>Launch offer</span> The first <b>20 users</b> get <b>free unlimited access for 2 weeks.</b></div>
+    <div class="hero-form" id="form-cta">
+      <input type="email" placeholder="you@workspace.com" aria-label="email" />
+      <button class="btn">Join the waitlist <i data-lucide="arrow-right" class="i-sm"></i></button>
+    </div>
+    <div class="form-note" style="text-align:center">Already <span id="count">2,418</span> writers, devs &amp; teams waiting.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>Dot<span class="c">MD</span> — real-time Markdown collaboration & review · © 2026</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  lucide.createIcons();
+
+  /* ---- theme toggle (§10): prefers-color-scheme default + data-theme override ---- */
+  var root = document.documentElement;
+  var btn = document.getElementById('themeToggle');
+  function isDark(){
+    var t = root.getAttribute('data-theme');
+    if(t==='dark') return true;
+    if(t==='light') return false;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function syncIcon(){
+    btn.innerHTML = '<i data-lucide="'+(isDark()?'moon':'sun')+'"></i>';
+    lucide.createIcons();
+  }
+  btn.addEventListener('click', function(){
+    root.setAttribute('data-theme', isDark() ? 'light' : 'dark');
+    syncIcon();
+  });
+  syncIcon();
+
+  /* ---- waitlist forms (no backend — local confirmation) ---- */
+  function wire(formId){
+    var form = document.getElementById(formId);
+    var input = form.querySelector('input');
+    var btn = form.querySelector('button');
+    btn.addEventListener('click', function(){
+      var v = input.value.trim();
+      var ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
+      if(!ok){ input.focus(); input.style.borderColor = 'var(--accent)'; return; }
+      form.innerHTML = '<div class="form-note" style="margin-top:0;font-size:14px"><span class="ok"><i data-lucide="check-circle" class="i-sm"></i>You\'re on the list.</span> We\'ll reach out to <b style="color:var(--text-primary)">'+v.replace(/</g,'')+'</b> when DotMD opens.</div>';
+      lucide.createIcons();
+      var c = document.getElementById('count');
+      if(c){ c.textContent = (parseInt(c.textContent.replace(/,/g,''))+1).toLocaleString(); }
+    });
+    input.addEventListener('input',function(){ input.style.borderColor = ''; });
+  }
+  wire('form-hero');
+  wire('form-cta');
+})();
+</script>
+</body>
+</html>
