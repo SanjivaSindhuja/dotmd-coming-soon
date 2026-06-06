@@ -147,6 +147,14 @@
     transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out);
   }
   .theme-toggle:hover{background:var(--bg-raised);color:var(--accent);border-color:var(--border-hover)}
+  .nav-links a.nav-signin{
+    display:inline-flex;align-items:center;gap:7px;
+    font-family:var(--mono);font-size:13px;font-weight:500;
+    background:var(--accent);color:#fff;
+    padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--accent);
+    text-decoration:none;transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);
+  }
+  .nav-links a.nav-signin:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#fff}
   .nav-links a.nav-cta{
     display:inline-flex;align-items:center;gap:7px;
     font-family:var(--mono);font-size:13px;font-weight:500;
@@ -155,7 +163,18 @@
     text-decoration:none;transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);
   }
   .nav-links a.nav-cta:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#fff}
-  @media(max-width:760px){.nav-links a:not(.nav-cta){display:none}}
+  @media(max-width:760px){
+    .nav-links a:not(.nav-cta):not(.nav-signin){display:none}
+    .nav-links{gap:8px}
+    .theme-toggle{display:none}
+    .logo-tag{display:none}
+    .nav-links a.nav-signin{padding:9px 12px}
+    .nav-links a.nav-cta{padding:9px 13px;white-space:nowrap}
+  }
+  @media(max-width:400px){
+    .wrap{padding:0 18px}
+    .nav-links a.nav-signin,.nav-links a.nav-cta{font-size:12px;padding:9px 10px}
+  }
 
   /* ---------- hero ---------- */
   .hero{padding:90px 0 56px;position:relative;text-align:center}
@@ -230,6 +249,31 @@
   .feat code{font-family:var(--mono);font-size:.85em;background:var(--bg-sunken);padding:1px 5px;border-radius:var(--radius-sm);color:var(--accent)}
   @media(max-width:860px){.feat-grid{grid-template-columns:1fr 1fr}.feat:last-child{grid-column:1 / -1}}
   @media(max-width:560px){.feat-grid{grid-template-columns:1fr}.feat:last-child{grid-column:auto}}
+
+  /* ---------- why / comparison ---------- */
+  .why{padding:64px 0 40px}
+  .why-lead{margin-top:18px;font-size:18px;color:var(--text-secondary);max-width:60ch}
+  .why-lead b{color:var(--text-primary);font-weight:600}
+  .cmp-wrap{margin-top:40px;border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;background:var(--bg-canvas)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px}
+  .cmp th,.cmp td{padding:15px 22px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
+  .cmp thead th{font-family:var(--mono);font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-secondary);background:var(--bg-surface)}
+  .cmp .col-them,.cmp .col-us{text-align:center;width:160px}
+  .cmp thead th.col-us{color:var(--accent)}
+  .cmp thead th.col-us .u-mark{font-family:var(--mono);font-weight:800;letter-spacing:-.04em;text-transform:none;font-size:15px}
+  .cmp .col-us{background:var(--accent-subtle)}
+  .cmp tbody td:first-child{color:var(--text-primary);font-weight:500}
+  .cmp tbody tr:last-child td{border-bottom:none}
+  .cmp .yes{color:var(--success);display:inline-flex}
+  .cmp .no{color:var(--text-muted);display:inline-flex}
+  .cmp tr.ai td:first-child{display:flex;align-items:center;gap:9px}
+  .ai-pill{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.06em;color:var(--accent);background:var(--accent-subtle);border:1px solid rgba(var(--accent-rgb),.3);padding:2px 7px;border-radius:var(--radius-full)}
+  .cmp tr.ai .col-us [data-lucide]{color:var(--accent)}
+  @media(max-width:620px){
+    .cmp th,.cmp td{padding:13px 14px;font-size:14px}
+    .cmp .col-them,.cmp .col-us{width:64px}
+    .cmp tr.ai td:first-child{flex-wrap:wrap;gap:6px}
+  }
 
   /* ---------- steps ---------- */
   .steps{padding:64px 0 40px}
@@ -306,12 +350,15 @@
     </div>
     <div class="nav-links">
       <a href="#features">Features</a>
+      <a href="demos.html">Demo</a>
       <a href="#how">How it works</a>
+      <a href="#why">Why us</a>
       <a href="#pricing">Pricing</a>
       <a href="#developers">Developer</a>
       <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
         <i data-lucide="sun"></i>
       </button>
+      <a href="signin.html" class="nav-signin">Sign in</a>
       <a href="#waitlist" class="nav-cta">Get early access</a>
     </div>
   </div>
@@ -361,6 +408,69 @@
       <div class="step"><span class="n">01</span><h3>Bring it in</h3><p>Paste Markdown, import <code>.md</code> or <code>.docx</code>, or sync a file straight from GitHub or GitLab.</p></div>
       <div class="step"><span class="n">02</span><h3>Review together</h3><p>Humans and AI comment, suggest edits, and highlight in real time — threaded, resolvable, and fully tracked.</p></div>
       <div class="step"><span class="n">03</span><h3>Resolve &amp; ship</h3><p>Accept changes, check the version diff, then export or sync back to git — formatting and history intact.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY / DIFFERENT -->
+<section class="why" id="why">
+  <div class="wrap">
+    <div class="sec-label lg no-hash">Why we're different</div>
+    <h2 class="sec-head">Everything a Markdown workspace does — <em>plus an AI layer.</em></h2>
+    <p class="why-lead">You already know the workflow: live Markdown editing, slide decks, diagrams, version history. <b>DotMD does all of it — then adds AI as a real collaborator</b> that reviews your docs, suggests edits, and prepares your slides alongside you. Same workspace you love, with intelligence built in.</p>
+
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th class="col-them">Classic Markdown tools</th>
+            <th class="col-us"><span class="u-mark">#DotMD</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Real-time Markdown editing</td>
+            <td class="col-them"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+          <tr>
+            <td>Slide decks from Markdown</td>
+            <td class="col-them"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+          <tr>
+            <td>Diagrams, math &amp; code blocks</td>
+            <td class="col-them"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+          <tr>
+            <td>Version history &amp; sharing</td>
+            <td class="col-them"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+          <tr class="ai">
+            <td>AI review participant <span class="ai-pill">AI</span></td>
+            <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+          <tr class="ai">
+            <td>AI-prepared slide decks <span class="ai-pill">AI</span></td>
+            <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+          <tr class="ai">
+            <td>AI suggested edits &amp; rewrites <span class="ai-pill">AI</span></td>
+            <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+          <tr class="ai">
+            <td>AI summaries &amp; answers <span class="ai-pill">AI</span></td>
+            <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
+            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>
