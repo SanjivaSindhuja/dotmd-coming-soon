@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Demos — DotMD</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+  /* ============================================================
+     TOKEN LAYER — mirrors index.html (DESIGN_SYSTEM §2–§6).
+     ============================================================ */
+  :root{
+    --paper:#FFFCF0; --base-50:#F2F0E5; --base-100:#E6E4D9; --base-150:#DAD8CE;
+    --base-200:#CECDC3; --base-300:#B7B5AC; --base-500:#878580; --base-600:#6F6E69;
+    --base-700:#575653; --base-800:#403E3C; --base-850:#343331; --base-900:#282726;
+    --base-950:#1C1B1A; --black:#100F0F;
+    --blue-600:#205EA6; --blue-400:#4385BE; --blue-700:#1A4F8C; --blue-300:#66A0C8; --blue-50:#E1ECEB;
+    --red-600:#AF3029;  --red-400:#D14D41;
+    --green-600:#66800B;--green-400:#879A39;
+    --yellow-600:#AD8301;--yellow-400:#D0A215;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --serif:'Instrument Serif',Georgia,serif;
+    --sans:'Hanken Grotesk',system-ui,sans-serif;
+    --radius-sm:4px; --radius-md:8px; --radius-lg:12px; --radius-full:9999px;
+    --motion-instant:0ms; --motion-fast:120ms; --motion-base:200ms; --motion-slow:320ms;
+    --ease-out:cubic-bezier(0,0,0.2,1);
+    --ease-in:cubic-bezier(0.4,0,1,1);
+    --ease-standard:cubic-bezier(0.4,0,0.2,1);
+    --icon-sm:16px; --icon-md:20px; --icon-lg:24px;
+    /* SEMANTIC — LIGHT */
+    --bg-canvas:var(--paper); --bg-surface:var(--base-50); --bg-raised:var(--base-100); --bg-sunken:var(--base-100);
+    --border:var(--base-100); --border-hover:var(--base-150); --border-strong:var(--base-200);
+    --text-primary:var(--black); --text-secondary:var(--base-600); --text-muted:var(--base-300); --text-on-accent:var(--paper);
+    --accent:var(--blue-600); --accent-hover:var(--blue-700); --accent-subtle:var(--blue-50); --success:var(--green-600);
+    --focus-ring:var(--blue-600); --accent-rgb:32,94,166; --grain-opacity:.5;
+    --green-rgb:102,128,11; --red-rgb:175,48,41;
+  }
+  :root[data-theme="dark"]{
+    --bg-canvas:var(--black); --bg-surface:var(--base-950); --bg-raised:var(--base-900); --bg-sunken:var(--base-950);
+    --border:var(--base-900); --border-hover:var(--base-850); --border-strong:var(--base-800);
+    --text-primary:var(--base-200); --text-secondary:var(--base-500); --text-muted:var(--base-700); --text-on-accent:var(--paper);
+    --accent:var(--blue-400); --accent-hover:var(--blue-300); --accent-subtle:rgba(67,133,190,0.16); --success:var(--green-400);
+    --focus-ring:var(--blue-400); --accent-rgb:67,133,190; --grain-opacity:.22;
+    --green-rgb:135,154,57; --red-rgb:209,77,65;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]):not([data-theme="dark"]){
+      --bg-canvas:var(--black); --bg-surface:var(--base-950); --bg-raised:var(--base-900);
+      --bg-sunken:var(--base-950); --border:var(--base-900); --border-hover:var(--base-850);
+      --border-strong:var(--base-800); --text-primary:var(--base-200);
+      --text-secondary:var(--base-500); --text-muted:var(--base-700);
+      --accent:var(--blue-400); --accent-hover:var(--blue-300);
+      --accent-subtle:rgba(67,133,190,0.16); --success:var(--green-400);
+      --focus-ring:var(--blue-400); --accent-rgb:67,133,190; --grain-opacity:.22;
+      --green-rgb:135,154,57; --red-rgb:209,77,65;
+    }
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg-canvas);color:var(--text-primary);font-family:var(--sans);font-size:17px;line-height:1.6;
+    -webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;position:relative;
+    transition:background var(--motion-base) var(--ease-standard),color var(--motion-base) var(--ease-standard);
+  }
+  body::before{
+    content:"";position:fixed;inset:0;z-index:1;pointer-events:none;opacity:var(--grain-opacity);
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+  :focus-visible{outline:2px solid var(--focus-ring);outline-offset:3px;border-radius:var(--radius-sm)}
+  [data-lucide]{width:var(--icon-md);height:var(--icon-md);stroke-width:2;vertical-align:middle}
+  .i-sm{width:var(--icon-sm);height:var(--icon-sm)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 32px;position:relative;z-index:2;width:100%}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:100;background:color-mix(in srgb,var(--bg-canvas) 82%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;flex-direction:column;gap:1px;line-height:1;text-decoration:none}
+  .logo-mark{font-family:var(--mono);font-weight:800;font-size:23px;letter-spacing:-.04em;display:flex;align-items:center;gap:2px}
+  .logo .hash{color:var(--accent)} .logo-mark .c{color:var(--accent)}
+  .logo-tag{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--text-muted);text-transform:uppercase;padding-left:1px}
+  .nav-links{display:flex;align-items:center;gap:18px;font-size:14.5px;font-weight:500}
+  .nav-back{display:inline-flex;align-items:center;gap:7px;color:var(--text-secondary);text-decoration:none;font-size:14px;transition:color var(--motion-fast) var(--ease-out)}
+  .nav-back:hover{color:var(--accent)}
+  .theme-toggle{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:var(--radius-sm);cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text-secondary);transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out)}
+  .theme-toggle:hover{background:var(--bg-raised);color:var(--accent);border-color:var(--border-hover)}
+  .nav-cta{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:13px;font-weight:500;background:var(--accent);color:#fff;padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--accent);text-decoration:none;transition:background var(--motion-fast) var(--ease-out)}
+  .nav-cta:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+
+  /* ---------- page head ---------- */
+  main{flex:1;padding:54px 0 80px}
+  .badge{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;color:var(--accent);background:rgba(var(--accent-rgb),.09);border:1px solid rgba(var(--accent-rgb),.28);padding:6px 13px;border-radius:var(--radius-full);margin-bottom:22px}
+  .badge .dot{width:6px;height:6px;border-radius:var(--radius-full);background:var(--accent)}
+  h1.head{font-family:var(--serif);font-weight:400;font-size:clamp(40px,5.6vw,68px);line-height:1.0;letter-spacing:-.015em;max-width:18ch}
+  h1.head em{font-style:italic;color:var(--accent)}
+  .sub{margin-top:20px;font-size:clamp(17px,1.8vw,20px);color:var(--text-secondary);max-width:60ch}
+
+  /* ---------- demo tabs ---------- */
+  .tabs{display:flex;gap:8px;margin-top:38px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:0}
+  .tab{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text-secondary);background:transparent;border:none;border-bottom:2px solid transparent;padding:12px 14px;cursor:pointer;transition:color var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);position:relative;top:1px}
+  .tab:hover{color:var(--text-primary)}
+  .tab[aria-selected="true"]{color:var(--accent);border-bottom-color:var(--accent)}
+  .tab .soon{font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);border:1px solid var(--border-strong);padding:2px 6px;border-radius:var(--radius-full)}
+  .panel[hidden]{display:none}
+
+  /* ---------- AI review demo stage ---------- */
+  .stage-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:30px;flex-wrap:wrap}
+  .stage-title{font-family:var(--serif);font-size:27px;letter-spacing:-.01em}
+  .stage-title em{font-style:italic;color:var(--accent)}
+  .stage-sub{font-size:14.5px;color:var(--text-secondary);margin-top:2px}
+  .controls{display:flex;gap:10px;align-items:center}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:13.5px;font-weight:500;cursor:pointer;background:var(--accent);color:var(--text-on-accent);border:1px solid var(--accent);padding:12px 18px;border-radius:var(--radius-sm);white-space:nowrap;transition:background var(--motion-fast) var(--ease-out),transform var(--motion-fast) var(--ease-out),opacity var(--motion-fast)}
+  .btn:hover{background:var(--accent-hover);border-color:var(--accent-hover);transform:translateY(-1px)}
+  .btn:disabled{opacity:.5;cursor:default;transform:none}
+  .btn.ghost{background:transparent;color:var(--text-secondary);border-color:var(--border-strong)}
+  .btn.ghost:hover{background:var(--bg-raised);color:var(--text-primary);transform:none}
+
+  .stage{display:grid;grid-template-columns:1.45fr 1fr;gap:0;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-canvas);margin-top:22px;min-height:520px}
+
+  /* doc pane */
+  .doc-pane{border-right:1px solid var(--border);display:flex;flex-direction:column;min-width:0}
+  .pane-bar{display:flex;align-items:center;gap:8px;padding:12px 18px;border-bottom:1px solid var(--border);background:var(--bg-surface);font-family:var(--mono);font-size:12px;color:var(--text-secondary)}
+  .pane-bar .fname{color:var(--text-primary)}
+  .dot-row{display:flex;gap:6px;margin-right:6px}
+  .dot-row i{width:10px;height:10px;border-radius:50%;background:var(--border-strong);display:inline-block}
+  .doc{padding:28px 32px;overflow:auto;font-size:15.5px;line-height:1.7}
+  .doc h1{font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.01em;margin-bottom:6px}
+  .doc h2{font-family:var(--serif);font-weight:400;font-size:21px;margin:22px 0 8px}
+  .doc p{color:var(--text-secondary);margin:8px 0}
+  .doc ul{margin:8px 0 8px 20px;color:var(--text-secondary)}
+  .doc li{margin:4px 0}
+  .doc code{font-family:var(--mono);font-size:.86em;background:var(--bg-sunken);padding:1px 6px;border-radius:var(--radius-sm);color:var(--accent)}
+  .doc .muted{color:var(--text-muted)}
+  /* highlightable targets */
+  .t{border-radius:3px;transition:background var(--motion-base) var(--ease-standard),box-shadow var(--motion-base) var(--ease-standard);padding:0 1px}
+  .t.lit{background:rgba(var(--accent-rgb),.16);box-shadow:0 0 0 1px rgba(var(--accent-rgb),.35)}
+  .t.applied{background:rgba(var(--green-rgb),.16);box-shadow:none}
+  del{color:var(--red-600);text-decoration:line-through;text-decoration-thickness:1px}
+  ins{color:var(--success);text-decoration:none;background:rgba(var(--green-rgb),.12);border-radius:2px;padding:0 2px}
+
+  /* ai pane */
+  .ai-pane{background:var(--bg-surface);display:flex;flex-direction:column;min-width:0}
+  .ai-bar{display:flex;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--border)}
+  .ai-ava{width:30px;height:30px;border-radius:var(--radius-full);background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .ai-ava [data-lucide]{width:17px;height:17px}
+  .ai-id{line-height:1.15}
+  .ai-id .nm{font-family:var(--mono);font-size:13px;font-weight:700}
+  .ai-id .st{font-size:11px;color:var(--text-secondary);display:flex;align-items:center;gap:6px}
+  .ai-id .st .pip{width:6px;height:6px;border-radius:50%;background:var(--text-muted)}
+  .ai-id .st.on .pip{background:var(--success);box-shadow:0 0 0 0 rgba(var(--green-rgb),.5);animation:pip 1.8s infinite}
+  @keyframes pip{0%{box-shadow:0 0 0 0 rgba(var(--green-rgb),.5)}70%{box-shadow:0 0 0 6px rgba(var(--green-rgb),0)}100%{box-shadow:0 0 0 0 rgba(var(--green-rgb),0)}}
+  .ai-feed{padding:16px 16px 8px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:12px}
+
+  /* empty + thinking states */
+  .empty{margin:auto;text-align:center;color:var(--text-muted);padding:30px 20px;max-width:30ch}
+  .empty [data-lucide]{width:30px;height:30px;margin-bottom:12px;opacity:.7}
+  .empty p{font-size:14px}
+  .thinking{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--text-secondary);padding:6px 2px}
+  .thinking .blobs{display:inline-flex;gap:4px}
+  .thinking .blobs i{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;animation:bob 1s infinite}
+  .thinking .blobs i:nth-child(2){animation-delay:.15s} .thinking .blobs i:nth-child(3){animation-delay:.3s}
+  @keyframes bob{0%,80%,100%{transform:translateY(0);opacity:.4}40%{transform:translateY(-4px);opacity:1}}
+
+  /* finding card */
+  .card{border:1px solid var(--border);background:var(--bg-canvas);border-radius:var(--radius-md);padding:14px 15px;opacity:0;transform:translateY(8px);animation:in .4s var(--ease-out) forwards}
+  @keyframes in{to{opacity:1;transform:none}}
+  .card .ctype{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:var(--radius-full);margin-bottom:9px}
+  .card .ctype.comment{color:var(--accent);background:var(--accent-subtle)}
+  .card .ctype.suggest{color:var(--success);background:rgba(var(--green-rgb),.14)}
+  .card .body{font-size:14px;color:var(--text-primary);line-height:1.55}
+  .card .quote{font-family:var(--mono);font-size:12px;color:var(--text-secondary);border-left:2px solid var(--border-strong);padding-left:9px;margin:9px 0;line-height:1.5}
+  .card .diff{font-family:var(--mono);font-size:12.5px;background:var(--bg-sunken);border-radius:var(--radius-sm);padding:9px 11px;margin:9px 0;line-height:1.6}
+  .card .acts{display:flex;gap:8px;margin-top:11px}
+  .mini{font-family:var(--mono);font-size:12px;font-weight:500;cursor:pointer;padding:7px 12px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:transparent;color:var(--text-secondary);transition:all var(--motion-fast) var(--ease-out)}
+  .mini:hover{color:var(--text-primary);border-color:var(--border-hover);background:var(--bg-raised)}
+  .mini.accept{background:var(--success);border-color:var(--success);color:#fff}
+  .mini.accept:hover{filter:brightness(1.07);color:#fff}
+  .card.resolved{opacity:.55}
+  .card .done{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11.5px;margin-top:9px}
+  .card .done.ok{color:var(--success)} .card .done.no{color:var(--text-muted)}
+
+  .summary{font-family:var(--mono);font-size:12px;color:var(--text-secondary);padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;gap:8px}
+  .summary b{color:var(--text-primary)}
+
+  /* ---------- more demos grid ---------- */
+  .more{margin-top:64px}
+  .more .sec-label{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+  .more h2{font-family:var(--serif);font-weight:400;font-size:30px;letter-spacing:-.01em}
+  .demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+  .dcard{border:1px solid var(--border);background:var(--bg-surface);border-radius:var(--radius-md);padding:24px 22px;transition:border-color var(--motion-fast) var(--ease-out)}
+  .dcard.live{cursor:pointer}
+  .dcard.live:hover{border-color:var(--border-strong)}
+  .dcard .mark{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:var(--radius-md);background:var(--accent-subtle);color:var(--accent);margin-bottom:14px}
+  .dcard h3{font-family:var(--serif);font-weight:400;font-size:21px;margin-bottom:6px}
+  .dcard p{font-size:14px;color:var(--text-secondary);line-height:1.5}
+  .dcard .pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:var(--radius-full);margin-top:14px}
+  .dcard .pill.live{color:var(--success);background:rgba(var(--green-rgb),.14)}
+  .dcard .pill.soon{color:var(--text-muted);border:1px solid var(--border-strong)}
+
+  @media(max-width:880px){
+    .stage{grid-template-columns:1fr}
+    .doc-pane{border-right:none;border-bottom:1px solid var(--border)}
+    .demo-grid{grid-template-columns:1fr 1fr}
+  }
+  @media(max-width:600px){
+    .demo-grid{grid-template-columns:1fr}
+    .nav-back span{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:0ms!important;transition-duration:0ms!important}
+    .btn:hover,.mini:hover{transform:none}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <a href="index.html" class="logo">
+      <div class="logo-mark"><span class="hash">#</span>Dot<span class="c">MD</span></div>
+      <div class="logo-tag">from generated to great</div>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-back"><i data-lucide="arrow-left" class="i-sm"></i><span>Back to home</span></a>
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme"><i data-lucide="sun"></i></button>
+      <a href="index.html#waitlist" class="nav-cta">Get early access</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+    <div class="badge"><span class="dot"></span>Interactive demos</div>
+    <h1 class="head">See DotMD's <em>AI</em> in action.</h1>
+    <p class="sub">A live, click-through look at what makes DotMD different. Run the AI reviewer on a real document and watch it comment, suggest edits, and prepare your work — right inside the page.</p>
+
+    <!-- demo tabs -->
+    <div class="tabs" role="tablist" aria-label="Demos">
+      <button class="tab" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="true"><i data-lucide="sparkles" class="i-sm"></i>AI Review</button>
+      <button class="tab" role="tab" id="tab-slides" aria-controls="panel-slides" aria-selected="false"><i data-lucide="presentation" class="i-sm"></i>AI Slide Prep <span class="soon">Soon</span></button>
+      <button class="tab" role="tab" id="tab-collab" aria-controls="panel-collab" aria-selected="false"><i data-lucide="users" class="i-sm"></i>Live Collaboration <span class="soon">Soon</span></button>
+    </div>
+
+    <!-- PANEL: AI REVIEW (live) -->
+    <section class="panel" id="panel-review" role="tabpanel" aria-labelledby="tab-review">
+      <div class="stage-head">
+        <div>
+          <div class="stage-title">AI <em>review</em> participant</div>
+          <div class="stage-sub">The AI reads your Markdown like a teammate would — then leaves comments and suggested edits you can accept or dismiss.</div>
+        </div>
+        <div class="controls">
+          <button class="btn ghost" id="resetBtn"><i data-lucide="rotate-ccw" class="i-sm"></i>Reset</button>
+          <button class="btn" id="runBtn"><i data-lucide="sparkles" class="i-sm"></i>Run AI review</button>
+        </div>
+      </div>
+
+      <div class="stage">
+        <!-- document -->
+        <div class="doc-pane">
+          <div class="pane-bar">
+            <span class="dot-row"><i></i><i></i><i></i></span>
+            <span class="fname">payments-service-spec.md</span>
+          </div>
+          <div class="doc" id="doc">
+            <h1>Payments Service — v2 Spec</h1>
+            <p class="muted">Draft · last edited just now</p>
+
+            <h2>Overview</h2>
+            <p>The payments service handles all transaction processing for checkout. It should be <span class="t" id="t1">fast and reliable</span>.</p>
+
+            <h2>Goals</h2>
+            <ul>
+              <li>Process payments quickly</li>
+              <li>Support cards, wallets, and bank transfers</li>
+              <li><span class="t" id="t2">Be very secure</span></li>
+            </ul>
+
+            <h2>API</h2>
+            <p><code>POST /v2/charge</code> creates a new charge. <span class="t" id="t3">It returns a charge object.</span></p>
+
+            <h2>Open Questions</h2>
+            <ul>
+              <li><span class="t" id="t4">How do we handle refunds?</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ai panel -->
+        <div class="ai-pane">
+          <div class="ai-bar">
+            <span class="ai-ava"><i data-lucide="sparkles"></i></span>
+            <div class="ai-id">
+              <div class="nm">DotMD AI</div>
+              <div class="st" id="aiStatus"><span class="pip"></span><span id="aiStatusText">Idle — ready to review</span></div>
+            </div>
+          </div>
+          <div class="ai-feed" id="feed">
+            <div class="empty" id="emptyState">
+              <i data-lucide="sparkles"></i>
+              <p>Hit <b>Run AI review</b> and the AI will read this spec and leave inline feedback.</p>
+            </div>
+          </div>
+          <div class="summary" id="summary" hidden><i data-lucide="check-circle" class="i-sm"></i><span id="summaryText"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANEL: SLIDES (placeholder) -->
+    <section class="panel" id="panel-slides" role="tabpanel" aria-labelledby="tab-slides" hidden>
+      <div class="empty" style="margin:60px auto"><i data-lucide="presentation"></i><p><b>AI Slide Prep</b> demo is coming soon — watch the AI turn this same Markdown into a review-ready deck.</p></div>
+    </section>
+
+    <!-- PANEL: COLLAB (placeholder) -->
+    <section class="panel" id="panel-collab" role="tabpanel" aria-labelledby="tab-collab" hidden>
+      <div class="empty" style="margin:60px auto"><i data-lucide="users"></i><p><b>Live Collaboration</b> demo is coming soon — multiple cursors, comments, and the AI editing in real time.</p></div>
+    </section>
+
+    <!-- MORE DEMOS -->
+    <section class="more">
+      <div class="sec-label">## More to explore</div>
+      <h2>The full demo library.</h2>
+      <div class="demo-grid">
+        <div class="dcard live" data-go="tab-review">
+          <span class="mark"><i data-lucide="sparkles"></i></span>
+          <h3>AI Review</h3>
+          <p>Watch the AI comment and suggest edits on a live document.</p>
+          <span class="pill live"><i data-lucide="circle-dot" class="i-sm"></i>Live now</span>
+        </div>
+        <div class="dcard" >
+          <span class="mark"><i data-lucide="presentation"></i></span>
+          <h3>AI Slide Prep</h3>
+          <p>Turn a Markdown doc into a polished slide deck in one click.</p>
+          <span class="pill soon">Coming soon</span>
+        </div>
+        <div class="dcard">
+          <span class="mark"><i data-lucide="users"></i></span>
+          <h3>Live Collaboration</h3>
+          <p>Real-time cursors, threaded comments, and AI in the room.</p>
+          <span class="pill soon">Coming soon</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script>
+(function(){
+  lucide.createIcons();
+
+  /* ---- theme toggle ---- */
+  var root = document.documentElement;
+  var tbtn = document.getElementById('themeToggle');
+  function isDark(){var t=root.getAttribute('data-theme');if(t==='dark')return true;if(t==='light')return false;return window.matchMedia('(prefers-color-scheme: dark)').matches;}
+  function syncIcon(){tbtn.innerHTML='<i data-lucide="'+(isDark()?'moon':'sun')+'"></i>';lucide.createIcons();}
+  tbtn.addEventListener('click',function(){root.setAttribute('data-theme',isDark()?'light':'dark');syncIcon();});
+  syncIcon();
+
+  /* ---- tab switching ---- */
+  var tabs=[['tab-review','panel-review'],['tab-slides','panel-slides'],['tab-collab','panel-collab']];
+  function activate(tabId){
+    tabs.forEach(function(pair){
+      var t=document.getElementById(pair[0]), p=document.getElementById(pair[1]);
+      var on=pair[0]===tabId;
+      t.setAttribute('aria-selected',on?'true':'false');
+      p.hidden=!on;
+    });
+  }
+  tabs.forEach(function(pair){document.getElementById(pair[0]).addEventListener('click',function(){activate(pair[0]);});});
+  document.querySelectorAll('.dcard.live').forEach(function(c){
+    c.addEventListener('click',function(){activate(c.getAttribute('data-go'));document.querySelector('.tabs').scrollIntoView({behavior:'smooth',block:'start'});});
+  });
+
+  /* ---- AI review simulation ---- */
+  var FINDINGS=[
+    {target:'t1',type:'comment',
+     quote:'"…it should be fast and reliable."',
+     body:"“Fast and reliable” is subjective and untestable. Define a measurable SLA so the team can verify it — e.g. <b>p99 latency &lt; 500ms</b> and <b>99.99% uptime</b>."},
+    {target:'t2',type:'suggest',
+     before:'Be very secure',
+     after:'Comply with PCI-DSS Level 1; encrypt card data at rest and in transit',
+     body:"This goal is too vague to act on. I’ve drafted a concrete, auditable replacement."},
+    {target:'t3',type:'comment',
+     quote:'"It returns a charge object."',
+     body:"Integrators will need the shape of that object. Document the <b>response schema</b> and the error codes you’ll return (e.g. <code>402</code>, <code>409</code>)."},
+    {target:'t4',type:'suggest',
+     before:'How do we handle refunds?',
+     after:'Refunds: support full and partial refunds via POST /v2/refund, idempotency-keyed, within 90 days',
+     body:"This open question is blocking the refunds epic. Here’s a proposed resolution to unblock it."}
+  ];
+
+  var doc=document.getElementById('doc');
+  var feed=document.getElementById('feed');
+  var runBtn=document.getElementById('runBtn');
+  var resetBtn=document.getElementById('resetBtn');
+  var statusEl=document.getElementById('aiStatus');
+  var statusText=document.getElementById('aiStatusText');
+  var summary=document.getElementById('summary');
+  var summaryText=document.getElementById('summaryText');
+  var originals={};
+  var running=false;
+  var accepted=0, dismissed=0, total=FINDINGS.length;
+
+  function wait(ms){return new Promise(function(r){setTimeout(r,ms);});}
+  function setStatus(text,on){statusText.textContent=text;statusEl.classList.toggle('on',!!on);}
+
+  function clearFeed(){feed.innerHTML='';}
+
+  function reset(){
+    running=false;accepted=0;dismissed=0;
+    clearFeed();
+    feed.innerHTML='<div class="empty" id="emptyState"><i data-lucide="sparkles"></i><p>Hit <b>Run AI review</b> and the AI will read this spec and leave inline feedback.</p></div>';
+    FINDINGS.forEach(function(f){
+      var el=document.getElementById(f.target);
+      if(originals[f.target]!==undefined){el.innerHTML=originals[f.target];}
+      el.classList.remove('lit','applied');
+    });
+    summary.hidden=true;
+    runBtn.disabled=false;
+    setStatus('Idle — ready to review',false);
+    lucide.createIcons();
+  }
+
+  function updateSummary(){
+    var open=total-accepted-dismissed;
+    summaryText.innerHTML='<b>'+total+'</b> findings · <b>'+accepted+'</b> accepted · <b>'+dismissed+'</b> dismissed'+(open>0?' · '+open+' open':'');
+    summary.hidden=false;
+  }
+
+  function renderCard(f,idx){
+    var card=document.createElement('div');
+    card.className='card';
+    var head = f.type==='comment'
+      ? '<span class="ctype comment"><i data-lucide="message-square" class="i-sm"></i>Comment</span>'
+      : '<span class="ctype suggest"><i data-lucide="square-pen" class="i-sm"></i>Suggested edit</span>';
+    var mid = f.type==='comment'
+      ? (f.quote?'<div class="quote">'+f.quote+'</div>':'')
+      : '<div class="diff"><del>'+f.before+'</del><br><ins>'+f.after+'</ins></div>';
+    var acts = f.type==='comment'
+      ? '<div class="acts"><button class="mini accept" data-act="ok">Resolve</button><button class="mini" data-act="no">Dismiss</button></div>'
+      : '<div class="acts"><button class="mini accept" data-act="ok">Accept edit</button><button class="mini" data-act="no">Dismiss</button></div>';
+    card.innerHTML = head + '<div class="body">'+f.body+'</div>' + mid + acts;
+    feed.appendChild(card);
+    lucide.createIcons();
+
+    var target=document.getElementById(f.target);
+    card.querySelectorAll('.mini').forEach(function(b){
+      b.addEventListener('click',function(){
+        var ok=b.getAttribute('data-act')==='ok';
+        if(ok && f.type==='suggest'){ target.textContent=f.after; target.classList.remove('lit'); target.classList.add('applied'); }
+        else { target.classList.remove('lit'); }
+        if(ok) accepted++; else dismissed++;
+        card.classList.add('resolved');
+        card.querySelector('.acts').outerHTML = ok
+          ? '<div class="done ok"><i data-lucide="check" class="i-sm"></i>'+(f.type==='suggest'?'Edit applied':'Resolved')+'</div>'
+          : '<div class="done no"><i data-lucide="x" class="i-sm"></i>Dismissed</div>';
+        lucide.createIcons();
+        updateSummary();
+      });
+    });
+  }
+
+  async function run(){
+    if(running) return;
+    running=true; runBtn.disabled=true; accepted=0; dismissed=0;
+    // snapshot originals once
+    FINDINGS.forEach(function(f){ if(originals[f.target]===undefined){originals[f.target]=document.getElementById(f.target).innerHTML;} });
+    clearFeed();
+    summary.hidden=true;
+    setStatus('Reading the document…',true);
+
+    var think=document.createElement('div');
+    think.className='thinking';
+    think.innerHTML='<span class="blobs"><i></i><i></i><i></i></span><span id="thinkTxt">Analysing structure & intent…</span>';
+    feed.appendChild(think);
+
+    await wait(1100);
+
+    for(var i=0;i<FINDINGS.length;i++){
+      var f=FINDINGS[i];
+      document.getElementById('thinkTxt').textContent='Reviewing section '+(i+1)+' of '+FINDINGS.length+'…';
+      var tgt=document.getElementById(f.target);
+      tgt.classList.add('lit');
+      tgt.scrollIntoView({behavior:'smooth',block:'center'});
+      await wait(750);
+      renderCard(f,i);
+      feed.scrollTop=feed.scrollHeight;
+      await wait(620);
+    }
+    think.remove();
+    setStatus('Review complete · '+total+' findings',false);
+    updateSummary();
+    running=false;
+  }
+
+  runBtn.addEventListener('click',run);
+  resetBtn.addEventListener('click',reset);
+})();
+</script>
+</body>
+</html>
