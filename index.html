@@ -574,7 +574,7 @@
       <input type="email" placeholder="you@workspace.com" aria-label="email" autocomplete="email" />
       <button class="btn">Join the waitlist <i data-lucide="arrow-right" class="i-sm"></i></button>
     </div>
-    <div class="form-note" style="text-align:center">Already <span id="count">2,418</span> writers, devs &amp; teams waiting.</div>
+    <div class="form-note" style="text-align:center">Only the first <b style="color:var(--text-primary)">20</b> to join claim the launch offer — sign-ups are logged in order.</div>
   </div>
 </section>
 
@@ -615,11 +615,6 @@
   var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
   var FORMSPREE_READY = FORMSPREE_ENDPOINT.indexOf('YOUR_FORM_ID') === -1;
 
-  function bumpCount(){
-    var c = document.getElementById('count');
-    if(c){ c.textContent = (parseInt(c.textContent.replace(/,/g,''),10)+1).toLocaleString(); }
-  }
-
   function esc(s){ return s.replace(/[<>&]/g,''); }
 
   function wire(formId){
@@ -645,7 +640,6 @@
       var hi = name ? esc(name.split(/\s+/)[0]) + ', you' : 'You';
       form.innerHTML = '<div class="form-note" style="margin-top:0;font-size:14px"><span class="ok"><i data-lucide="check-circle" class="i-sm"></i>'+hi+'\'re on the list.</span> We\'ll reach out to <b style="color:var(--text-primary)">'+esc(email)+'</b> when DotMD opens.</div>';
       lucide.createIcons();
-      bumpCount();
     }
 
     function submit(){
