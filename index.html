@@ -177,7 +177,7 @@
   }
 
   /* ---------- hero ---------- */
-  .hero{padding:90px 0 56px;position:relative;text-align:center}
+  .hero{padding:90px 0 28px;position:relative;text-align:center}
   .hero h1.head,.hero .sub{margin-left:auto;margin-right:auto}
   .hero .hero-form{margin-left:auto;margin-right:auto;justify-content:center}
   .badge{
@@ -227,6 +227,14 @@
   .fu{opacity:0;transform:translateY(22px);animation:fu .9s var(--ease-out) forwards}
   @keyframes fu{to{opacity:1;transform:none}}
 
+  /* scroll cue — hints there's more below */
+  .scroll-cue{display:inline-flex;flex-direction:column;align-items:center;gap:7px;margin-top:34px;text-decoration:none;color:var(--text-muted);font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;transition:color var(--motion-fast) var(--ease-out)}
+  .scroll-cue:hover{color:var(--accent)}
+  .scroll-cue .chev{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border:1px solid var(--border-strong);border-radius:var(--radius-full);animation:cue 1.8s var(--ease-standard) infinite}
+  .scroll-cue:hover .chev{border-color:var(--accent)}
+  .scroll-cue [data-lucide]{width:18px;height:18px}
+  @keyframes cue{0%,100%{transform:translateY(0);opacity:.7}50%{transform:translateY(6px);opacity:1}}
+
   /* ---------- section scaffolding ---------- */
   section{position:relative}
   .sec-label{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px}
@@ -241,7 +249,7 @@
   @media(max-width:720px){h2.sec-head.solo{white-space:normal;font-size:clamp(28px,6.4vw,40px)}}
 
   /* ---------- features ---------- */
-  .features{padding:64px 0 40px}
+  .features{padding:34px 0 40px}
   .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:40px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
   .feat{background:var(--bg-canvas);padding:34px 28px;transition:background var(--motion-base) var(--ease-standard);position:relative}
   .feat:hover{background:var(--bg-raised)}
@@ -381,6 +389,10 @@
     </div>
     <div class="form-note fu" style="animation-delay:.32s">No spam. Just one note when DotMD opens its doors.</div>
 
+    <a href="#features" class="scroll-cue fu" style="animation-delay:.4s" aria-label="Scroll to see what DotMD does">
+      <span>See what's inside</span>
+      <span class="chev"><i data-lucide="chevron-down"></i></span>
+    </a>
   </div>
 </header>
 
