@@ -321,10 +321,12 @@
   .price ul{list-style:none;margin:18px 0 22px;padding:0;font-size:14px;color:var(--text-secondary);flex:1}
   .price li{padding:8px 0;border-top:1px solid var(--border);display:flex;gap:9px;line-height:1.4;align-items:flex-start}
   .price li [data-lucide]{color:var(--accent);flex:none;margin-top:2px}
-  .price .pbtn{font-family:var(--mono);font-size:13px;font-weight:500;text-align:center;text-decoration:none;display:block;padding:12px;border-radius:var(--radius-sm);transition:background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);background:transparent;color:var(--text-primary);border:1px solid var(--text-primary)}
+  .price .pbtn{width:100%;font-family:var(--mono);font-size:13px;font-weight:500;text-align:center;text-decoration:none;display:block;padding:12px;border-radius:var(--radius-sm);transition:background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);background:transparent;color:var(--text-primary);border:1px solid var(--text-primary);cursor:pointer}
   .price .pbtn:hover{background:var(--text-primary);color:var(--bg-canvas)}
   .price .pbtn.solid{background:var(--accent);border-color:var(--accent);color:var(--text-on-accent)}
   .price .pbtn.solid:hover{background:var(--accent-hover);border-color:var(--accent-hover)}
+  .price .pbtn:disabled{cursor:not-allowed;opacity:.5;background:transparent;color:var(--text-muted);border-color:var(--border-strong)}
+  .price .pbtn:disabled:hover{background:transparent;color:var(--text-muted);border-color:var(--border-strong)}
   @media(max-width:860px){.price-grid{grid-template-columns:1fr 1fr}}
   @media(max-width:520px){.price-grid{grid-template-columns:1fr}}
 
@@ -535,7 +537,7 @@
           <li><i data-lucide="check" class="i-sm"></i>2 collaborators</li>
           <li><i data-lucide="check" class="i-sm"></i>Basic rendering</li>
         </ul>
-        <a href="#waitlist" class="pbtn">Start free</a>
+        <button type="button" class="pbtn" disabled>Coming soon</button>
       </div>
       <div class="price pop">
         <span class="price-pill"><i data-lucide="star" class="i-sm"></i>Most popular</span>
@@ -547,7 +549,7 @@
           <li><i data-lucide="check" class="i-sm"></i>AI participant mode</li>
           <li><i data-lucide="check" class="i-sm"></i>Version history</li>
         </ul>
-        <a href="#waitlist" class="pbtn solid">Get early access</a>
+        <button type="button" class="pbtn solid" disabled>Coming soon</button>
       </div>
       <div class="price">
         <div class="price-name">Team</div>
@@ -558,7 +560,7 @@
           <li><i data-lucide="check" class="i-sm"></i>API access</li>
           <li><i data-lucide="check" class="i-sm"></i>Priority support</li>
         </ul>
-        <a href="#waitlist" class="pbtn">Get early access</a>
+        <button type="button" class="pbtn" disabled>Coming soon</button>
       </div>
       <div class="price">
         <div class="price-name">Enterprise</div>
@@ -569,7 +571,7 @@
           <li><i data-lucide="check" class="i-sm"></i>SLA guarantees</li>
           <li><i data-lucide="check" class="i-sm"></i>Dedicated CSM</li>
         </ul>
-        <a href="#waitlist" class="pbtn">Contact sales</a>
+        <button type="button" class="pbtn" disabled>Coming soon</button>
       </div>
     </div>
   </div>
