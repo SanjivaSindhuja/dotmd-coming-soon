@@ -236,6 +236,9 @@
   .sec-label.hl{display:inline-flex;background:var(--accent-subtle);color:var(--accent);padding:6px 14px;border-radius:var(--radius-sm)}
   h2.sec-head{font-family:var(--serif);font-weight:400;font-size:clamp(32px,4.4vw,52px);line-height:1.04;letter-spacing:-.01em;max-width:18ch}
   h2.sec-head em{font-style:italic;color:var(--accent)}
+  /* single-line section headings */
+  h2.sec-head.solo{max-width:none;white-space:nowrap;font-size:clamp(26px,3.7vw,44px)}
+  @media(max-width:720px){h2.sec-head.solo{white-space:normal;font-size:clamp(28px,6.4vw,40px)}}
 
   /* ---------- features ---------- */
   .features{padding:64px 0 40px}
@@ -384,7 +387,7 @@
 <section class="features" id="features">
   <div class="wrap">
     <div class="sec-label lg no-hash">What DotMD does</div>
-    <h2 class="sec-head">Google-Docs-grade review — <em>built for Markdown.</em></h2>
+    <h2 class="sec-head solo">Google-Docs-grade review — <em>built for Markdown.</em></h2>
     <div class="feat-grid">
       <div class="feat"><span class="mark"><i data-lucide="file-text"></i></span><h3>Full-fidelity rendering</h3><p>GFM tables, code blocks, Mermaid diagrams, and math render exactly as written — no broken previews, no surprises.</p></div>
       <div class="feat"><span class="mark"><i data-lucide="message-square"></i></span><h3>Inline comments</h3><p>Comment on any selection — a word, a sentence, a whole section — in threaded discussions with <code>@mentions</code> and resolve.</p></div>
@@ -403,7 +406,7 @@
 <section class="steps" id="how">
   <div class="wrap">
     <div class="sec-label lg no-hash">How it works</div>
-    <h2 class="sec-head">Three steps from <em>draft</em> to <em>done.</em></h2>
+    <h2 class="sec-head solo">Three steps from <em>draft</em> to <em>done.</em></h2>
     <div class="step-row">
       <div class="step"><span class="n">01</span><h3>Bring it in</h3><p>Paste Markdown, import <code>.md</code> or <code>.docx</code>, or sync a file straight from GitHub or GitLab.</p></div>
       <div class="step"><span class="n">02</span><h3>Review together</h3><p>Humans and AI comment, suggest edits, and highlight in real time — threaded, resolvable, and fully tracked.</p></div>
@@ -416,7 +419,7 @@
 <section class="why" id="why">
   <div class="wrap">
     <div class="sec-label lg no-hash">Why we're different</div>
-    <h2 class="sec-head">Everything a Markdown workspace does — <em>plus an AI layer.</em></h2>
+    <h2 class="sec-head solo">Everything a Markdown workspace does — <em>plus an AI layer.</em></h2>
     <p class="why-lead">You already know the workflow: live Markdown editing, slide decks, diagrams, version history. <b>DotMD does all of it — then adds AI as a real collaborator</b> that reviews your docs, suggests edits, and prepares your slides alongside you. Same workspace you love, with intelligence built in.</p>
 
     <div class="cmp-wrap">
