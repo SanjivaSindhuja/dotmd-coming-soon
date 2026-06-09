@@ -605,21 +605,69 @@
   });
   syncIcon();
 
-  /* ---- waitlist forms (no backend — local confirmation) ---- */
+  /* ---- waitlist forms → Formspree ----
+     STEP 1: create a free form at https://formspree.io
+     STEP 2: paste its endpoint below (e.g. 'https://formspree.io/f/xyzabcde').
+     Until then it falls back to a local confirmation so nothing breaks. */
+  var FORMSPREE_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
+  var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+  var FORMSPREE_READY = FORMSPREE_ENDPOINT.indexOf('YOUR_FORM_ID') === -1;
+
+  function bumpCount(){
+    var c = document.getElementById('count');
+    if(c){ c.textContent = (parseInt(c.textContent.replace(/,/g,''),10)+1).toLocaleString(); }
+  }
+
   function wire(formId){
     var form = document.getElementById(formId);
     var input = form.querySelector('input');
     var btn = form.querySelector('button');
-    btn.addEventListener('click', function(){
-      var v = input.value.trim();
-      var ok = /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v);
-      if(!ok){ input.focus(); input.style.borderColor = 'var(--accent)'; return; }
-      form.innerHTML = '<div class="form-note" style="margin-top:0;font-size:14px"><span class="ok"><i data-lucide="check-circle" class="i-sm"></i>You\'re on the list.</span> We\'ll reach out to <b style="color:var(--text-primary)">'+v.replace(/</g,'')+'</b> when DotMD opens.</div>';
+    var btnHTML = btn.innerHTML;
+
+    function clearError(){ var e = form.parentNode.querySelector('.form-err[data-for="'+formId+'"]'); if(e) e.remove(); }
+    function showError(msg){
+      clearError();
+      var e = document.createElement('div');
+      e.className = 'form-err'; e.setAttribute('data-for', formId);
+      e.style.cssText = 'margin-top:10px;font-family:var(--mono);font-size:12px;color:var(--red-600)';
+      e.textContent = msg;
+      form.insertAdjacentElement('afterend', e);
+    }
+    function showSuccess(v){
+      clearError();
+      form.innerHTML = '<div class="form-note" style="margin-top:0;font-size:14px"><span class="ok"><i data-lucide="check-circle" class="i-sm"></i>You\'re on the list.</span> We\'ll reach out to <b style="color:var(--text-primary)">'+v.replace(/[<>&]/g,'')+'</b> when DotMD opens.</div>';
       lucide.createIcons();
-      var c = document.getElementById('count');
-      if(c){ c.textContent = (parseInt(c.textContent.replace(/,/g,''))+1).toLocaleString(); }
-    });
-    input.addEventListener('input',function(){ input.style.borderColor = ''; });
+      bumpCount();
+    }
+
+    function submit(){
+      var v = input.value.trim();
+      if(!EMAIL_RE.test(v)){ input.focus(); input.style.borderColor = 'var(--accent)'; showError('Please enter a valid email address.'); return; }
+      clearError();
+
+      if(!FORMSPREE_READY){ showSuccess(v); return; }   // graceful fallback until endpoint is set
+
+      btn.disabled = true; btn.style.opacity = '.6'; btn.style.cursor = 'default'; btn.textContent = 'Submitting…';
+      var fd = new FormData();
+      fd.append('email', v);
+      fd.append('source', formId === 'form-hero' ? 'hero' : 'final-cta');
+      fetch(FORMSPREE_ENDPOINT, { method:'POST', headers:{ 'Accept':'application/json' }, body: fd })
+        .then(function(res){
+          if(res.ok){ showSuccess(v); return; }
+          return res.json().then(function(d){
+            var m = (d && d.errors && d.errors[0] && d.errors[0].message) || 'Something went wrong. Please try again.';
+            throw new Error(m);
+          });
+        })
+        .catch(function(err){
+          btn.disabled = false; btn.style.opacity = ''; btn.style.cursor = ''; btn.innerHTML = btnHTML; lucide.createIcons();
+          showError(err && err.message ? err.message : 'Network error — please try again.');
+        });
+    }
+
+    btn.addEventListener('click', submit);
+    input.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); submit(); } });
+    input.addEventListener('input', function(){ input.style.borderColor = ''; clearError(); });
   }
   wire('form-hero');
   wire('form-cta');
