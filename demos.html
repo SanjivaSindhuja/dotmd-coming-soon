@@ -352,6 +352,10 @@
 (function(){
   lucide.createIcons();
 
+  /* ---- always open at the top on (re)load, unless a specific anchor is requested ---- */
+  if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; }
+  if(!location.hash){ window.scrollTo(0, 0); }
+
   /* ---- theme toggle ---- */
   var root = document.documentElement;
   var tbtn = document.getElementById('themeToggle');
