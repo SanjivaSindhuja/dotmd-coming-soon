@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script src="https://accounts.google.com/gsi/client" async></script>
 <style>
   /* ============================================================
      TOKEN LAYER — mirrors index.html (DESIGN_SYSTEM §2–§6).
@@ -348,14 +349,92 @@
   document.getElementById('to-signin').addEventListener('click', function(e){ e.preventDefault(); show('signin'); });
   if(location.hash === '#create') show('create');
 
-  /* ---- provider buttons (no backend — demo confirmation) ---- */
-  document.querySelectorAll('.provider').forEach(function(p){
-    p.addEventListener('click', function(){
-      alert('Continuing with ' + p.getAttribute('data-provider') + ' — connect your OAuth provider here.');
+  /* ---- Google sign-in (Google Identity Services) ----
+     STEP 1: Google Cloud Console → APIs & Services → Credentials →
+             Create OAuth client ID → Web application.
+     STEP 2: Authorized JavaScript origins → add https://sanjivasindhuja.github.io
+             (and http://localhost for local testing).
+     STEP 3: paste the Client ID below (ends with .apps.googleusercontent.com). */
+  var GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
+  var GOOGLE_READY = GOOGLE_CLIENT_ID.indexOf('YOUR_GOOGLE_CLIENT_ID') === -1;
+  var SESSION_KEY = 'dotmd_user';
+
+  function escapeHtml(s){ return String(s).replace(/[<>&"]/g, function(c){ return {'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c]; }); }
+
+  function authNote(msg, isErr){
+    var host = document.querySelector('.auth');
+    var old = document.getElementById('auth-note'); if(old) old.remove();
+    var n = document.createElement('div');
+    n.id = 'auth-note';
+    n.style.cssText = 'margin-top:16px;text-align:center;font-family:var(--mono);font-size:12px;color:'+(isErr?'var(--red-600)':'var(--text-secondary)');
+    n.textContent = msg;
+    host.appendChild(n);
+  }
+
+  function showSignedIn(p){
+    try{ localStorage.setItem(SESSION_KEY, JSON.stringify({ name:p.name, email:p.email, picture:p.picture })); }catch(e){}
+    var host = document.querySelector('.auth');
+    var initial = (p.name || p.email || '?').trim().charAt(0).toUpperCase();
+    var avatar = p.picture
+      ? '<img src="'+p.picture+'" alt="" referrerpolicy="no-referrer" style="width:64px;height:64px;border-radius:var(--radius-full);object-fit:cover" />'
+      : '<div class="dev-avatar" style="width:64px;height:64px;font-size:24px">'+initial+'</div>';
+    host.innerHTML =
+      '<div class="auth-card" style="text-align:center">'
+      + '<div style="display:flex;justify-content:center;margin-bottom:16px">'+avatar+'</div>'
+      + '<div class="auth-head" style="margin-bottom:18px"><h1 style="font-size:30px">You\'re <em>in.</em></h1>'
+      + '<p>Signed in as <b style="color:var(--text-primary)">'+escapeHtml(p.name||'')+'</b><br>'+escapeHtml(p.email||'')+'</p></div>'
+      + '<a href="index.html" class="provider" style="background:var(--accent);color:#fff;border-color:var(--accent);justify-content:center">Continue to DotMD</a>'
+      + '<button class="provider" id="signout" type="button" style="margin-bottom:0;justify-content:center">Sign out</button>'
+      + '</div>';
+    lucide.createIcons();
+    document.getElementById('signout').addEventListener('click', function(){
+      try{ localStorage.removeItem(SESSION_KEY); }catch(e){}
+      if(window.google && google.accounts && google.accounts.id){ google.accounts.id.disableAutoSelect(); }
+      location.reload();
     });
+  }
+
+  var googleTokenClient = null;
+  function getGoogleClient(){
+    if(!GOOGLE_READY) return null;
+    if(googleTokenClient) return googleTokenClient;
+    if(window.google && google.accounts && google.accounts.oauth2){
+      googleTokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: GOOGLE_CLIENT_ID,
+        scope: 'openid email profile',
+        callback: function(resp){
+          if(resp && resp.access_token){
+            fetch('https://www.googleapis.com/oauth2/v3/userinfo', { headers:{ Authorization:'Bearer '+resp.access_token } })
+              .then(function(r){ return r.json(); })
+              .then(function(profile){ showSignedIn(profile); })
+              .catch(function(){ authNote('Could not load your Google profile — please try again.', true); });
+          } else {
+            authNote('Google sign-in was cancelled.', true);
+          }
+        }
+      });
+      return googleTokenClient;
+    }
+    return null;
+  }
+
+  function googleSignIn(){
+    if(!GOOGLE_READY){ authNote('Google sign-in isn\'t configured yet — add your OAuth Client ID.', true); return; }
+    var c = getGoogleClient();
+    if(c){ c.requestAccessToken(); }
+    else { authNote('Google sign-in is still loading — try again in a second.', true); }
+  }
+
+  /* ---- wire provider buttons ---- */
+  document.querySelectorAll('.provider[data-provider="Google"]').forEach(function(p){
+    p.addEventListener('click', googleSignIn);
+  });
+  document.querySelectorAll('.provider[data-provider="Facebook"]').forEach(function(p){
+    p.style.opacity = '.55'; p.style.cursor = 'default';
+    p.addEventListener('click', function(){ authNote('Facebook sign-in is coming soon — use “Continue with Google” for now.', false); });
   });
 
-  /* ---- email validation (client-side only) ---- */
+  /* ---- email/password forms (Google is the live method for now) ---- */
   var emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
   document.getElementById('form-signin').addEventListener('submit', function(e){
@@ -365,7 +444,7 @@
     var err = document.getElementById('err-signin');
     if(!emailRe.test(email) || pass.length < 1){ err.classList.add('show'); return; }
     err.classList.remove('show');
-    alert('Signed in as ' + email + ' — wire this to your auth backend.');
+    authNote('Email sign-in is coming soon — use “Continue with Google” above.', false);
   });
 
   document.getElementById('form-create').addEventListener('submit', function(e){
@@ -376,8 +455,14 @@
     var err = document.getElementById('err-create');
     if(!name || !emailRe.test(email) || pass.length < 8){ err.classList.add('show'); return; }
     err.classList.remove('show');
-    alert('Account created for ' + email + ' — wire this to your auth backend.');
+    authNote('Email sign-up is coming soon — use “Continue with Google” above.', false);
   });
+
+  /* ---- restore an existing session ---- */
+  try{
+    var saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+    if(saved && saved.email){ showSignedIn(saved); }
+  }catch(e){}
 })();
 </script>
 </body>
