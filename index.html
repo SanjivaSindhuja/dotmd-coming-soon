@@ -3,7 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>DotMD — real-time Markdown collaboration & review</title>
+<title>DotMD — real-time Markdown collaboration & AI review</title>
+<meta name="description" content="DotMD brings Google-Docs-style comments, suggested edits, and real-time collaboration to Markdown — plus AI that reviews your docs and prepares your slides alongside you. Join the waitlist." />
+<link rel="canonical" href="https://sanjivasindhuja.github.io/dotmd-coming-soon/" />
+
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="DotMD" />
+<meta property="og:title" content="DotMD — where humans and AI review Markdown together" />
+<meta property="og:description" content="Google-Docs-style comments, suggested edits & real-time AI review for the Markdown your team already works in. Join the waitlist." />
+<meta property="og:url" content="https://sanjivasindhuja.github.io/dotmd-coming-soon/" />
+<meta property="og:image" content="https://sanjivasindhuja.github.io/dotmd-coming-soon/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="DotMD — where humans and AI review Markdown together" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="DotMD — where humans and AI review Markdown together" />
+<meta name="twitter:description" content="Google-Docs-style comments, suggested edits & real-time AI review for Markdown. Join the waitlist." />
+<meta name="twitter:image" content="https://sanjivasindhuja.github.io/dotmd-coming-soon/og-image.png" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Hanken+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -261,6 +285,44 @@
   @media(max-width:860px){.feat-grid{grid-template-columns:1fr 1fr}.feat:last-child{grid-column:1 / -1}}
   @media(max-width:560px){.feat-grid{grid-template-columns:1fr}.feat:last-child{grid-column:auto}}
 
+  /* ---------- product showcase ---------- */
+  .showcase{padding:30px 0 24px}
+  .show-lead{margin-top:14px;font-size:18px;color:var(--text-secondary);max-width:62ch}
+  .show-window{margin-top:30px;border:1px solid var(--border-strong);border-radius:var(--radius-lg);overflow:hidden;background:var(--bg-canvas);box-shadow:0 30px 70px -36px rgba(0,0,0,.55)}
+  .show-bar{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg-surface);font-family:var(--mono);font-size:12px;color:var(--text-secondary)}
+  .show-bar .dots{display:flex;gap:6px}
+  .show-bar .dots i{width:11px;height:11px;border-radius:50%;background:var(--border-strong);display:inline-block}
+  .show-bar .fname{color:var(--text-primary)}
+  .show-bar .live{margin-left:auto;display:inline-flex;align-items:center;gap:7px;color:var(--success);font-size:11px;letter-spacing:.04em}
+  .show-bar .live .pip{width:7px;height:7px;border-radius:50%;background:var(--success);box-shadow:0 0 0 0 color-mix(in srgb,var(--success) 50%,transparent);animation:cue 1.8s var(--ease-standard) infinite}
+  .show-body{display:grid;grid-template-columns:1.5fr 1fr}
+  .show-doc{padding:26px 32px;border-right:1px solid var(--border);font-size:15px;line-height:1.7;min-width:0}
+  .show-doc h3{font-family:var(--serif);font-weight:400;font-size:25px;letter-spacing:-.01em;margin-bottom:6px}
+  .show-doc .meta{font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-bottom:14px}
+  .show-doc p{color:var(--text-secondary);margin:10px 0}
+  .show-doc mark{background:rgba(var(--accent-rgb),.16);color:var(--text-primary);box-shadow:0 0 0 1px rgba(var(--accent-rgb),.4);border-radius:3px;padding:0 3px}
+  .show-doc del{color:var(--red-600);text-decoration:line-through;text-decoration-thickness:1px}
+  .show-doc ins{color:var(--success);text-decoration:none;background:color-mix(in srgb,var(--success) 14%,transparent);border-radius:2px;padding:0 3px}
+  .show-ai{background:var(--bg-surface);padding:18px;display:flex;flex-direction:column;gap:12px;min-width:0}
+  .show-ai .who{display:flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12.5px;font-weight:700}
+  .show-ai .who .av{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+  .show-ai .who .av [data-lucide]{width:16px;height:16px}
+  .show-card{border:1px solid var(--border);background:var(--bg-canvas);border-radius:var(--radius-md);padding:13px 14px;animation:fu .7s var(--ease-out) both}
+  .show-card.c2{animation-delay:.15s}
+  .show-card .tag{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:var(--radius-full);margin-bottom:8px}
+  .show-card.comment .tag{color:var(--accent);background:var(--accent-subtle)}
+  .show-card.suggest .tag{color:var(--success);background:color-mix(in srgb,var(--success) 16%,transparent)}
+  .show-card .cbody{font-size:13.5px;color:var(--text-primary);line-height:1.5}
+  .show-card .diff{font-family:var(--mono);font-size:12px;background:var(--bg-sunken);border-radius:var(--radius-sm);padding:8px 10px;margin-top:8px;line-height:1.55}
+  .show-card .acts{display:flex;gap:7px;margin-top:10px}
+  .show-card .mini{font-family:var(--mono);font-size:11px;font-weight:500;padding:6px 11px;border-radius:var(--radius-sm);border:1px solid var(--border-strong);color:var(--text-secondary)}
+  .show-card .mini.go{background:var(--success);border-color:var(--success);color:#fff}
+  .show-cta{text-align:center;margin-top:26px}
+  .show-cta .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:14px;font-weight:500;background:var(--accent);color:var(--text-on-accent);border:1px solid var(--accent);padding:13px 22px;border-radius:var(--radius-sm);text-decoration:none;transition:background var(--motion-fast) var(--ease-out),transform var(--motion-fast) var(--ease-out)}
+  .show-cta .btn:hover{background:var(--accent-hover);transform:translateY(-1px)}
+  .show-cta .hint{display:block;margin-top:10px;font-family:var(--mono);font-size:11.5px;color:var(--text-muted)}
+  @media(max-width:760px){.show-body{grid-template-columns:1fr}.show-doc{border-right:none;border-bottom:1px solid var(--border)}}
+
   /* ---------- why / comparison ---------- */
   .why{padding:40px 0 24px}
   .why-lead{margin-top:18px;font-size:18px;color:var(--text-secondary);max-width:none}
@@ -392,12 +454,56 @@
     </div>
     <div class="form-note fu" style="animation-delay:.32s">No spam. Just one note when DotMD opens its doors.</div>
 
-    <a href="#features" class="scroll-cue fu" style="animation-delay:.4s" aria-label="Scroll to see what DotMD does">
-      <span>See what's inside</span>
+    <a href="#preview" class="scroll-cue fu" style="animation-delay:.4s" aria-label="Scroll to see DotMD in action">
+      <span>See it in action</span>
       <span class="chev"><i data-lucide="chevron-down"></i></span>
     </a>
   </div>
 </header>
+
+<!-- PRODUCT SHOWCASE -->
+<section class="showcase" id="preview">
+  <div class="wrap">
+    <div class="sec-label lg no-hash">See it in action</div>
+    <h2 class="sec-head solo">Your AI teammate, <em>right in the doc.</em></h2>
+    <p class="show-lead">The AI reads your Markdown like a colleague would — leaving inline comments and suggested edits you can accept or dismiss. No new tool to learn.</p>
+
+    <div class="show-window">
+      <div class="show-bar">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="fname">payments-service-spec.md</span>
+        <span class="live"><span class="pip"></span>AI reviewing</span>
+      </div>
+      <div class="show-body">
+        <div class="show-doc">
+          <h3>Payments Service — v2 Spec</h3>
+          <div class="meta">Draft · edited just now</div>
+          <p>The payments service handles all checkout transactions. It should be <mark>fast and reliable</mark>.</p>
+          <p><b style="color:var(--text-primary);font-weight:600">Security:</b> <del>Be very secure</del> <ins>Comply with PCI-DSS Level 1; encrypt card data at rest and in transit</ins>.</p>
+          <p><code style="font-family:var(--mono);font-size:.85em;background:var(--bg-sunken);padding:1px 5px;border-radius:4px;color:var(--accent)">POST /v2/charge</code> creates a new charge and returns a charge object.</p>
+        </div>
+        <div class="show-ai">
+          <div class="who"><span class="av"><i data-lucide="sparkles"></i></span>DotMD AI</div>
+          <div class="show-card comment">
+            <span class="tag"><i data-lucide="message-square" class="i-sm"></i>Comment</span>
+            <div class="cbody">“Fast and reliable” is subjective. Define a measurable SLA — e.g. <b>p99 &lt; 500ms</b>, <b>99.99% uptime</b>.</div>
+          </div>
+          <div class="show-card suggest c2">
+            <span class="tag"><i data-lucide="square-pen" class="i-sm"></i>Suggested edit</span>
+            <div class="cbody">This goal is too vague to act on — here's a concrete, auditable version.</div>
+            <div class="diff"><del>Be very secure</del><br><ins>Comply with PCI-DSS Level 1…</ins></div>
+            <div class="acts"><span class="mini go">Accept</span><span class="mini">Dismiss</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="show-cta">
+      <a href="demos.html" class="btn">Try the live demo <i data-lucide="arrow-right" class="i-sm"></i></a>
+      <span class="hint">Run the AI reviewer yourself — no signup needed.</span>
+    </div>
+  </div>
+</section>
 
 <!-- FEATURES -->
 <section class="features" id="features">
