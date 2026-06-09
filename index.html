@@ -130,7 +130,7 @@
     border-bottom:1px solid var(--border);
   }
   .nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
-  .logo{display:flex;flex-direction:column;gap:1px;line-height:1}
+  .logo{display:flex;flex-direction:column;gap:1px;line-height:1;text-decoration:none;color:inherit}
   .logo-mark{font-family:var(--mono);font-weight:800;font-size:23px;letter-spacing:-.04em;display:flex;align-items:center;gap:2px}
   .logo .hash{color:var(--accent)}
   .logo-mark .c{color:var(--accent)}
@@ -317,6 +317,7 @@
   .price-name{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)}
   .price-tag{font-family:var(--serif);font-size:40px;line-height:1;margin:12px 0 2px}
   .price-tag .per{font-family:var(--sans);font-size:13px;color:var(--text-muted)}
+  .price-tag .was{font-family:var(--serif);font-size:27px;color:var(--text-muted);text-decoration:line-through;text-decoration-thickness:2px;margin-right:9px}
   .price-pill{display:inline-flex;align-items:center;gap:5px;align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;background:var(--accent);color:var(--text-on-accent);padding:3px 9px;border-radius:var(--radius-sm);margin-bottom:10px}
   .price ul{list-style:none;margin:18px 0 22px;padding:0;font-size:14px;color:var(--text-secondary);flex:1}
   .price li{padding:8px 0;border-top:1px solid var(--border);display:flex;gap:9px;line-height:1.4;align-items:flex-start}
@@ -357,10 +358,10 @@
 
 <nav>
   <div class="wrap nav-in">
-    <div class="logo">
+    <a href="index.html" class="logo" aria-label="DotMD home">
       <div class="logo-mark"><span class="hash">#</span>Dot<span class="c">MD</span></div>
       <div class="logo-tag">from generated to great</div>
-    </div>
+    </a>
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="demos.html">Demo</a>
@@ -542,7 +543,7 @@
       <div class="price pop">
         <span class="price-pill"><i data-lucide="star" class="i-sm"></i>Most popular</span>
         <div class="price-name">Pro</div>
-        <div class="price-tag">$5<span class="per"> /user/mo</span></div>
+        <div class="price-tag"><span class="was">$10</span>$5<span class="per"> /user/mo</span></div>
         <ul>
           <li><i data-lucide="check" class="i-sm"></i>100 documents / month</li>
           <li><i data-lucide="check" class="i-sm"></i>Unlimited collaborators</li>
@@ -601,6 +602,10 @@
 <script>
 (function(){
   lucide.createIcons();
+
+  /* ---- always open at the top on (re)load, unless a specific anchor is requested ---- */
+  if('scrollRestoration' in history){ history.scrollRestoration = 'manual'; }
+  if(!location.hash){ window.scrollTo(0, 0); }
 
   /* ---- theme toggle (§10): prefers-color-scheme default + data-theme override ---- */
   var root = document.documentElement;
