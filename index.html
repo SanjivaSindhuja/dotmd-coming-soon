@@ -171,14 +171,6 @@
     transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out);
   }
   .theme-toggle:hover{background:var(--bg-raised);color:var(--accent);border-color:var(--border-hover)}
-  .nav-links a.nav-signin{
-    display:inline-flex;align-items:center;gap:7px;
-    font-family:var(--mono);font-size:13px;font-weight:500;
-    background:var(--accent);color:#fff;
-    padding:10px 16px;border-radius:var(--radius-sm);border:1px solid var(--accent);
-    text-decoration:none;transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);
-  }
-  .nav-links a.nav-signin:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#fff}
   .nav-links a.nav-cta{
     display:inline-flex;align-items:center;gap:7px;
     font-family:var(--mono);font-size:13px;font-weight:500;
@@ -188,16 +180,15 @@
   }
   .nav-links a.nav-cta:hover{background:var(--accent-hover);border-color:var(--accent-hover);color:#fff}
   @media(max-width:760px){
-    .nav-links a:not(.nav-cta):not(.nav-signin){display:none}
+    .nav-links a:not(.nav-cta){display:none}
     .nav-links{gap:8px}
     .theme-toggle{display:none}
     .logo-tag{display:none}
-    .nav-links a.nav-signin{padding:9px 12px}
     .nav-links a.nav-cta{padding:9px 13px;white-space:nowrap}
   }
   @media(max-width:400px){
     .wrap{padding:0 18px}
-    .nav-links a.nav-signin,.nav-links a.nav-cta{font-size:12px;padding:9px 10px}
+    .nav-links a.nav-cta{font-size:12px;padding:9px 10px}
   }
 
   /* ---------- hero ---------- */
@@ -396,7 +387,6 @@
       <button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
         <i data-lucide="sun"></i>
       </button>
-      <a href="signin.html" class="nav-signin">Sign in</a>
       <a href="#waitlist" class="nav-cta">Get early access</a>
     </div>
   </div>
