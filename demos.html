@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Demos — DotMD</title>
-<meta name="description" content="See DotMD's AI in action — run the AI reviewer on a live document and watch it comment, suggest edits, and prepare your work." />
+<meta name="description" content="See DotMD's AI in action — run it on a live document and watch it rewrite, expand, summarize, and translate your text inline." />
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 <meta property="og:type" content="website" />
@@ -250,25 +250,25 @@
   <div class="wrap">
     <div class="badge"><span class="dot"></span>Interactive demos</div>
     <h1 class="head">See DotMD's <em>AI</em> in action.</h1>
-    <p class="sub">A live, click-through look at what makes DotMD different. Run the AI reviewer on a real document and watch it comment, suggest edits, and prepare your work — right inside the page.</p>
+    <p class="sub">A live, click-through look at what makes DotMD different. Run the AI on a real document and watch it rewrite, expand, summarize, and translate your text — right inside the page.</p>
 
     <!-- demo tabs -->
     <div class="tabs" role="tablist" aria-label="Demos">
-      <button class="tab" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="true"><i data-lucide="sparkles" class="i-sm"></i>AI Review</button>
-      <button class="tab" role="tab" id="tab-slides" aria-controls="panel-slides" aria-selected="false"><i data-lucide="presentation" class="i-sm"></i>AI Slide Prep <span class="soon">Soon</span></button>
-      <button class="tab" role="tab" id="tab-collab" aria-controls="panel-collab" aria-selected="false"><i data-lucide="users" class="i-sm"></i>Live Collaboration <span class="soon">Soon</span></button>
+      <button class="tab" role="tab" id="tab-review" aria-controls="panel-review" aria-selected="true"><i data-lucide="sparkles" class="i-sm"></i>AI editing</button>
+      <button class="tab" role="tab" id="tab-slides" aria-controls="panel-slides" aria-selected="false"><i data-lucide="presentation" class="i-sm"></i>Slides <span class="soon">Soon</span></button>
+      <button class="tab" role="tab" id="tab-collab" aria-controls="panel-collab" aria-selected="false"><i data-lucide="table" class="i-sm"></i>Spreadsheets <span class="soon">Soon</span></button>
     </div>
 
     <!-- PANEL: AI REVIEW (live) -->
     <section class="panel" id="panel-review" role="tabpanel" aria-labelledby="tab-review">
       <div class="stage-head">
         <div>
-          <div class="stage-title">AI <em>review</em> participant</div>
-          <div class="stage-sub">The AI reads your Markdown like a teammate would — then leaves comments and suggested edits you can accept or dismiss.</div>
+          <div class="stage-title">AI editing, <em>inline</em></div>
+          <div class="stage-sub">Watch DotMD's AI rewrite, expand, summarize, and translate text right in your Markdown — accept each change or dismiss it.</div>
         </div>
         <div class="controls">
           <button class="btn ghost" id="resetBtn"><i data-lucide="rotate-ccw" class="i-sm"></i>Reset</button>
-          <button class="btn" id="runBtn"><i data-lucide="sparkles" class="i-sm"></i>Run AI review</button>
+          <button class="btn" id="runBtn"><i data-lucide="sparkles" class="i-sm"></i>Run AI edit</button>
         </div>
       </div>
 
@@ -309,13 +309,13 @@
             <span class="ai-ava"><i data-lucide="sparkles"></i></span>
             <div class="ai-id">
               <div class="nm">DotMD AI</div>
-              <div class="st" id="aiStatus"><span class="pip"></span><span id="aiStatusText">Idle — ready to review</span></div>
+              <div class="st" id="aiStatus"><span class="pip"></span><span id="aiStatusText">Idle — ready to edit</span></div>
             </div>
           </div>
           <div class="ai-feed" id="feed">
             <div class="empty" id="emptyState">
               <i data-lucide="sparkles"></i>
-              <p>Hit <b>Run AI review</b> and the AI will read this spec and leave inline feedback.</p>
+              <p>Hit <b>Run AI edit</b> and the AI will rewrite, expand, summarize, and translate text right in this doc.</p>
             </div>
           </div>
           <div class="summary" id="summary" hidden><i data-lucide="check-circle" class="i-sm"></i><span id="summaryText"></span></div>
@@ -325,12 +325,12 @@
 
     <!-- PANEL: SLIDES (placeholder) -->
     <section class="panel" id="panel-slides" role="tabpanel" aria-labelledby="tab-slides" hidden>
-      <div class="empty" style="margin:60px auto"><i data-lucide="presentation"></i><p><b>AI Slide Prep</b> demo is coming soon — watch the AI turn this same Markdown into a review-ready deck.</p></div>
+      <div class="empty" style="margin:60px auto"><i data-lucide="presentation"></i><p><b>Slides</b> demo is coming soon — turn any Markdown doc into a deck and present it in presenter mode.</p></div>
     </section>
 
     <!-- PANEL: COLLAB (placeholder) -->
     <section class="panel" id="panel-collab" role="tabpanel" aria-labelledby="tab-collab" hidden>
-      <div class="empty" style="margin:60px auto"><i data-lucide="users"></i><p><b>Live Collaboration</b> demo is coming soon — multiple cursors, comments, and the AI editing in real time.</p></div>
+      <div class="empty" style="margin:60px auto"><i data-lucide="table"></i><p><b>Spreadsheets</b> demo is coming soon — build tables with a real formula engine (<code>SUM</code>, <code>AVERAGE</code>, <code>IF</code>) inline in your docs.</p></div>
     </section>
 
     <!-- MORE DEMOS -->
@@ -340,20 +340,20 @@
       <div class="demo-grid">
         <div class="dcard live" data-go="tab-review">
           <span class="mark"><i data-lucide="sparkles"></i></span>
-          <h3>AI Review</h3>
-          <p>Watch the AI comment and suggest edits on a live document.</p>
+          <h3>AI editing</h3>
+          <p>Watch the AI rewrite, expand, summarize, and translate text inline.</p>
           <span class="pill live"><i data-lucide="circle-dot" class="i-sm"></i>Live now</span>
         </div>
         <div class="dcard" >
           <span class="mark"><i data-lucide="presentation"></i></span>
-          <h3>AI Slide Prep</h3>
-          <p>Turn a Markdown doc into a polished slide deck in one click.</p>
+          <h3>Slides</h3>
+          <p>Turn a Markdown doc into a deck and present it in presenter mode.</p>
           <span class="pill soon">Coming soon</span>
         </div>
         <div class="dcard">
-          <span class="mark"><i data-lucide="users"></i></span>
-          <h3>Live Collaboration</h3>
-          <p>Real-time cursors, threaded comments, and AI in the room.</p>
+          <span class="mark"><i data-lucide="table"></i></span>
+          <h3>Spreadsheets</h3>
+          <p>Tables with a real formula engine — SUM, AVERAGE, IF — inline.</p>
           <span class="pill soon">Coming soon</span>
         </div>
       </div>
@@ -394,20 +394,22 @@
 
   /* ---- AI review simulation ---- */
   var FINDINGS=[
-    {target:'t1',type:'comment',
-     quote:'"…it should be fast and reliable."',
-     body:"“Fast and reliable” is subjective and untestable. Define a measurable SLA so the team can verify it — e.g. <b>p99 latency &lt; 500ms</b> and <b>99.99% uptime</b>."},
-    {target:'t2',type:'suggest',
+    {target:'t1',type:'suggest',label:'Rewrite',icon:'pen-line',
+     before:'fast and reliable',
+     after:'consistently fast, with a p99 response under 500ms',
+     body:"Rewrote a vague phrase into something specific and measurable."},
+    {target:'t2',type:'suggest',label:'Expand',icon:'maximize-2',
      before:'Be very secure',
-     after:'Comply with PCI-DSS Level 1; encrypt card data at rest and in transit',
-     body:"This goal is too vague to act on. I’ve drafted a concrete, auditable replacement."},
-    {target:'t3',type:'comment',
-     quote:'"It returns a charge object."',
-     body:"Integrators will need the shape of that object. Document the <b>response schema</b> and the error codes you’ll return (e.g. <code>402</code>, <code>409</code>)."},
-    {target:'t4',type:'suggest',
+     after:'Comply with PCI-DSS Level 1 and encrypt card data at rest and in transit',
+     body:"Expanded a one-liner into a concrete, auditable goal."},
+    {target:'t3',type:'suggest',label:'Summarize',icon:'list',
+     before:'It returns a charge object.',
+     after:'Returns a Charge object — id, status, amount.',
+     body:"Tightened the sentence and named the key fields."},
+    {target:'t4',type:'suggest',label:'Translate',icon:'languages',
      before:'How do we handle refunds?',
-     after:'Refunds: support full and partial refunds via POST /v2/refund, idempotency-keyed, within 90 days',
-     body:"This open question is blocking the refunds epic. Here’s a proposed resolution to unblock it."}
+     after:'¿Cómo gestionamos los reembolsos?',
+     body:"Translated the selection to Spanish."}
   ];
 
   var doc=document.getElementById('doc');
@@ -430,7 +432,7 @@
   function reset(){
     running=false;accepted=0;dismissed=0;
     clearFeed();
-    feed.innerHTML='<div class="empty" id="emptyState"><i data-lucide="sparkles"></i><p>Hit <b>Run AI review</b> and the AI will read this spec and leave inline feedback.</p></div>';
+    feed.innerHTML='<div class="empty" id="emptyState"><i data-lucide="sparkles"></i><p>Hit <b>Run AI edit</b> and the AI will rewrite, expand, summarize, and translate text right in this doc.</p></div>';
     FINDINGS.forEach(function(f){
       var el=document.getElementById(f.target);
       if(originals[f.target]!==undefined){el.innerHTML=originals[f.target];}
@@ -451,9 +453,7 @@
   function renderCard(f,idx){
     var card=document.createElement('div');
     card.className='card';
-    var head = f.type==='comment'
-      ? '<span class="ctype comment"><i data-lucide="message-square" class="i-sm"></i>Comment</span>'
-      : '<span class="ctype suggest"><i data-lucide="square-pen" class="i-sm"></i>Suggested edit</span>';
+    var head = '<span class="ctype '+(f.type==='comment'?'comment':'suggest')+'"><i data-lucide="'+(f.icon||(f.type==='comment'?'message-square':'square-pen'))+'" class="i-sm"></i>'+(f.label||(f.type==='comment'?'Comment':'Suggested edit'))+'</span>';
     var mid = f.type==='comment'
       ? (f.quote?'<div class="quote">'+f.quote+'</div>':'')
       : '<div class="diff"><del>'+f.before+'</del><br><ins>'+f.after+'</ins></div>';
@@ -499,7 +499,7 @@
 
     for(var i=0;i<FINDINGS.length;i++){
       var f=FINDINGS[i];
-      document.getElementById('thinkTxt').textContent='Reviewing section '+(i+1)+' of '+FINDINGS.length+'…';
+      document.getElementById('thinkTxt').textContent='Editing selection '+(i+1)+' of '+FINDINGS.length+'…';
       var tgt=document.getElementById(f.target);
       tgt.classList.add('lit');
       tgt.scrollIntoView({behavior:'smooth',block:'center'});
@@ -509,7 +509,7 @@
       await wait(620);
     }
     think.remove();
-    setStatus('Review complete · '+total+' findings',false);
+    setStatus('Done · '+total+' edits ready',false);
     updateSummary();
     running=false;
   }
