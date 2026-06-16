@@ -326,6 +326,15 @@
 
   /* ---------- pricing ---------- */
   .pricing{padding:40px 0 24px}
+  .price-lead{margin-top:14px;font-size:18px;color:var(--text-secondary)}
+  .bill-toggle{display:inline-flex;gap:4px;margin-top:24px;padding:4px;background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-full)}
+  .bill-opt{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--text-secondary);background:transparent;border:none;padding:8px 20px;border-radius:var(--radius-full);cursor:pointer;transition:background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out)}
+  .bill-opt:hover{color:var(--text-primary)}
+  .bill-opt.active{background:var(--accent);color:#fff}
+  .price-note{font-family:var(--mono);font-size:11.5px;color:var(--text-muted);margin:4px 0 0;min-height:16px;line-height:1.35}
+  .tier-badge{display:inline-flex;align-items:center;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:var(--radius-full);margin-left:9px;vertical-align:middle}
+  .tier-badge.pop{background:var(--accent);color:#fff}
+  .tier-badge.seat{background:var(--bg-raised);color:var(--text-secondary);border:1px solid var(--border-strong)}
   .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:40px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
   .price{background:var(--bg-canvas);padding:30px 24px;display:flex;flex-direction:column}
   .price.pop{background:var(--bg-raised)}
@@ -526,11 +535,19 @@
 <section class="pricing" id="pricing">
   <div class="wrap">
     <div class="sec-label lg no-hash">Pricing</div>
-    <h2 class="sec-head solo">Start free. <em>Scale when you're ready.</em></h2>
+    <h2 class="sec-head solo">Simple, <em>transparent</em> pricing.</h2>
+    <p class="price-lead">Start free — upgrade when your team needs more.</p>
+
+    <div class="bill-toggle" role="group" aria-label="Billing period">
+      <button class="bill-opt active" data-bill="monthly" type="button">Monthly</button>
+      <button class="bill-opt" data-bill="annual" type="button">Annual</button>
+    </div>
+
     <div class="price-grid">
       <div class="price">
         <div class="price-name">Free</div>
-        <div class="price-tag">$0<span class="per"> /mo</span></div>
+        <div class="price-tag">$0<span class="per"> / month</span></div>
+        <div class="price-note">&nbsp;</div>
         <ul>
           <li><i data-lucide="check" class="i-sm"></i>5 documents</li>
           <li><i data-lucide="check" class="i-sm"></i>1 collaborator per doc</li>
@@ -541,9 +558,9 @@
         <a href="https://app.dotmd.co/" target="_blank" rel="noopener" class="pbtn">Start free</a>
       </div>
       <div class="price pop">
-        <span class="price-pill"><i data-lucide="star" class="i-sm"></i>Most popular</span>
-        <div class="price-name">Premium</div>
-        <div class="price-tag">$5<span class="per"> /user/mo</span></div>
+        <div class="price-name">Premium <span class="tier-badge pop">Most popular</span></div>
+        <div class="price-tag" id="tag-premium">$5<span class="per"> / user / month</span></div>
+        <div class="price-note" id="note-premium">&nbsp;</div>
         <ul>
           <li><i data-lucide="check" class="i-sm"></i>Unlimited documents</li>
           <li><i data-lucide="check" class="i-sm"></i>Unlimited collaborators</li>
@@ -555,8 +572,9 @@
         <a href="https://app.dotmd.co/" target="_blank" rel="noopener" class="pbtn solid">Get Premium</a>
       </div>
       <div class="price">
-        <div class="price-name">Team</div>
-        <div class="price-tag">$5<span class="per"> /seat/mo · min 2</span></div>
+        <div class="price-name">Team <span class="tier-badge seat">Per seat</span></div>
+        <div class="price-tag" id="tag-team">$5<span class="per"> / seat / month</span></div>
+        <div class="price-note" id="note-team">2 seats minimum</div>
         <ul>
           <li><i data-lucide="check" class="i-sm"></i>Everything in Premium</li>
           <li><i data-lucide="check" class="i-sm"></i>Central seat management</li>
@@ -688,6 +706,30 @@
     });
   }
   wire('form-cta');
+
+  /* ---- pricing: monthly / annual toggle ---- */
+  var PRICES = {
+    monthly: {
+      premium: { tag:'$5<span class="per"> / user / month</span>', note:'' },
+      team:    { tag:'$5<span class="per"> / seat / month</span>', note:'2 seats minimum' }
+    },
+    annual: {
+      premium: { tag:'$60<span class="per"> / user / year</span>', note:'One payment, billed yearly' },
+      team:    { tag:'$60<span class="per"> / seat / year</span>', note:'One payment, billed yearly · 2 seats minimum' }
+    }
+  };
+  function setBilling(p){
+    var d = PRICES[p];
+    var tp=document.getElementById('tag-premium'), np=document.getElementById('note-premium');
+    var tt=document.getElementById('tag-team'), nt=document.getElementById('note-team');
+    if(tp){ tp.innerHTML=d.premium.tag; np.innerHTML=d.premium.note||'&nbsp;'; }
+    if(tt){ tt.innerHTML=d.team.tag; nt.innerHTML=d.team.note||'&nbsp;'; }
+    document.querySelectorAll('.bill-opt').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-bill')===p); });
+  }
+  document.querySelectorAll('.bill-opt').forEach(function(b){
+    b.addEventListener('click', function(){ setBilling(b.getAttribute('data-bill')); });
+  });
+  setBilling('monthly');
 })();
 </script>
 </body>
