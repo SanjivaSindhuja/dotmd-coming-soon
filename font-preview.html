@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DotMD — font directions preview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&family=Geist+Mono:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700;800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --paper:#FFFCF0; --black:#100F0F; --base-50:#F2F0E5; --base-100:#E6E4D9; --base-200:#CECDC3;
+    --base-300:#B7B5AC; --base-500:#878580; --base-600:#6F6E69; --base-900:#282726; --base-950:#1C1B1A;
+    --blue-600:#205EA6; --blue-400:#4385BE;
+    --bg:#100F0F; --surface:#1C1B1A; --raised:#282726; --border:#282726; --border-strong:#403E3C;
+    --text:#E6E4D9; --text2:#878580; --muted:#575653; --accent:#4385BE; --accent-hover:#66A0C8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;padding:48px 24px 80px;font-family:'Inter',system-ui,sans-serif}
+  .wrap{max-width:1060px;margin:0 auto}
+  .page-h{font-family:'Geist',sans-serif;font-weight:700;font-size:30px;color:var(--paper);margin-bottom:6px}
+  .page-sub{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text2);margin-bottom:40px}
+
+  .opt{border:1px solid var(--border);border-radius:14px;background:var(--surface);padding:0;margin-bottom:26px;overflow:hidden}
+  .opt-tag{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--raised);padding:12px 26px;border-bottom:1px solid var(--border)}
+  .opt-tag b{color:var(--paper)}
+  .card{padding:34px 36px 40px}
+
+  .logo{font-family:var(--mono);font-weight:800;font-size:24px;letter-spacing:-.03em;color:var(--paper)}
+  .logo .h{color:var(--accent)} .logo .m{color:var(--accent)}
+  .tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+  .label{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:26px 0 12px}
+  h1.disp{font-family:var(--disp);font-weight:var(--disp-w);font-size:46px;line-height:1.04;letter-spacing:-.02em;max-width:18ch;color:var(--paper)}
+  h1.disp em{color:var(--accent);font-style:var(--disp-em,normal)}
+  p.body{font-family:var(--body);font-size:18px;line-height:1.6;color:var(--text2);max-width:64ch;margin-top:18px}
+  p.body b{color:var(--text);font-weight:600}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:14px;font-weight:500;background:var(--accent);color:#fff;padding:13px 22px;border-radius:6px;margin-top:24px;text-decoration:none}
+
+  /* OPTION FONT MAPS */
+  .now{--disp:'Instrument Serif',serif;--disp-w:400;--disp-em:italic;--body:'Hanken Grotesk',sans-serif;--mono:'JetBrains Mono',monospace}
+  .a{--disp:'Geist',sans-serif;--disp-w:700;--disp-em:normal;--body:'Geist',sans-serif;--mono:'Geist Mono',monospace}
+  .b{--disp:'Instrument Serif',serif;--disp-w:400;--disp-em:italic;--body:'Inter',sans-serif;--mono:'JetBrains Mono',monospace}
+  .c{--disp:'Inter',sans-serif;--disp-w:800;--disp-em:normal;--body:'Inter',sans-serif;--mono:'JetBrains Mono',monospace}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="page-h">DotMD — font directions</div>
+  <div class="page-sub">Same content, four type systems. Pick one and I'll apply it to the site.</div>
+
+  <!-- CURRENT -->
+  <div class="opt now">
+    <div class="opt-tag"><b>CURRENT</b> · Instrument Serif + Hanken Grotesk + JetBrains Mono</div>
+    <div class="card">
+      <div class="logo"><span class="h">#</span>Dot<span class="m">MD</span></div>
+      <div class="tag">From generated to great</div>
+      <div class="label">## What DotMD does</div>
+      <h1 class="disp">Write, collaborate &amp; present <em>in plain Markdown.</em></h1>
+      <p class="body">DotMD is a Markdown-native workspace — <b>write with a live preview, collaborate in real time, and let AI rewrite or summarize</b> as you go.</p>
+      <a class="btn">Get Premium</a>
+    </div>
+  </div>
+
+  <!-- A -->
+  <div class="opt a">
+    <div class="opt-tag"><b>OPTION A</b> · Geist + Geist Mono &nbsp;— dev-tool modern (recommended)</div>
+    <div class="card">
+      <div class="logo"><span class="h">#</span>Dot<span class="m">MD</span></div>
+      <div class="tag">From generated to great</div>
+      <div class="label">## What DotMD does</div>
+      <h1 class="disp">Write, collaborate &amp; present <em>in plain Markdown.</em></h1>
+      <p class="body">DotMD is a Markdown-native workspace — <b>write with a live preview, collaborate in real time, and let AI rewrite or summarize</b> as you go.</p>
+      <a class="btn">Get Premium</a>
+    </div>
+  </div>
+
+  <!-- B -->
+  <div class="opt b">
+    <div class="opt-tag"><b>OPTION B</b> · Instrument Serif (hero) + Inter + JetBrains Mono</div>
+    <div class="card">
+      <div class="logo"><span class="h">#</span>Dot<span class="m">MD</span></div>
+      <div class="tag">From generated to great</div>
+      <div class="label">## What DotMD does</div>
+      <h1 class="disp">Write, collaborate &amp; present <em>in plain Markdown.</em></h1>
+      <p class="body">DotMD is a Markdown-native workspace — <b>write with a live preview, collaborate in real time, and let AI rewrite or summarize</b> as you go.</p>
+      <a class="btn">Get Premium</a>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="opt c">
+    <div class="opt-tag"><b>OPTION C</b> · Inter + JetBrains Mono &nbsp;— safe SaaS standard</div>
+    <div class="card">
+      <div class="logo"><span class="h">#</span>Dot<span class="m">MD</span></div>
+      <div class="tag">From generated to great</div>
+      <div class="label">## What DotMD does</div>
+      <h1 class="disp">Write, collaborate &amp; present <em>in plain Markdown.</em></h1>
+      <p class="body">DotMD is a Markdown-native workspace — <b>write with a live preview, collaborate in real time, and let AI rewrite or summarize</b> as you go.</p>
+      <a class="btn">Get Premium</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
