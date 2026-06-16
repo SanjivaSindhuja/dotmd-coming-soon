@@ -326,7 +326,7 @@
 
   /* ---------- pricing ---------- */
   .pricing{padding:40px 0 24px}
-  .price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:40px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:40px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden}
   .price{background:var(--bg-canvas);padding:30px 24px;display:flex;flex-direction:column}
   .price.pop{background:var(--bg-raised)}
   .price-name{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-secondary)}
@@ -397,7 +397,7 @@
   <div class="wrap">
     <div class="badge fu" style="animation-delay:.05s"><span class="dot"></span>Launching soon · join the waitlist</div>
     <h1 class="head fu" style="animation-delay:.12s">Where humans and AI<br><em>review Markdown together.</em></h1>
-    <p class="sub fu" style="animation-delay:.2s">Your AI tools write specs, docs, and READMEs in Markdown — then review falls apart. <b>DotMD brings doc-style comments, suggested edits, and real-time collaboration to the Markdown your team and your AI agents already work in</b> — without leaving git.</p>
+    <p class="sub fu" style="animation-delay:.2s">DotMD is a Markdown-native workspace. <b>Write with a live preview, collaborate in real time, get AI help to rewrite and summarize, and turn any doc into slides or spreadsheets</b> — all in plain Markdown.</p>
 
   </div>
 </header>
@@ -406,17 +406,16 @@
 <section class="features" id="features">
   <div class="wrap">
     <div class="sec-label lg no-hash">What DotMD does</div>
-    <h2 class="sec-head solo">Doc-grade review — <em>built for Markdown.</em></h2>
+    <h2 class="sec-head solo">Your whole workflow — <em>in plain Markdown.</em></h2>
     <div class="feat-grid">
-      <div class="feat"><span class="mark"><i data-lucide="file-text"></i></span><h3>Full-fidelity rendering</h3><p>GFM tables, code blocks, Mermaid diagrams, and math render exactly as written — no broken previews, no surprises.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="message-square"></i></span><h3>Inline comments</h3><p>Comment on any selection — a word, a sentence, a whole section — in threaded discussions with <code>@mentions</code> and resolve.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="square-pen"></i></span><h3>Suggested edits</h3><p>Propose changes track-changes style. Authors accept or reject line by line, with the full history preserved.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="highlighter"></i></span><h3>Highlights &amp; annotations</h3><p>Mark up drafts with color-coded highlights so feedback is impossible to miss and easy to act on.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="users"></i></span><h3>Real-time collaboration</h3><p>CRDT-powered editing for 25+ people at once — live cursors, instant sync, and zero merge conflicts.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="sparkles"></i></span><h3>AI participant mode</h3><p>Let AI agents join as collaborators. They read, comment, and suggest edits through the API, right alongside your team.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="history"></i></span><h3>Version history &amp; diff</h3><p>Every change is tracked. Compare versions side-by-side or inline, and roll back to any point anytime.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="share-2"></i></span><h3>Sharing &amp; roles</h3><p>Share a link with role-based access — viewer, commenter, or editor — and stay in control of every document.</p></div>
-      <div class="feat"><span class="mark"><i data-lucide="git-branch"></i></span><h3>Import, export &amp; git sync</h3><p>Bring in or ship out <code>.md</code>, <code>.docx</code>, and <code>.pdf</code>, and sync bi-directionally with GitHub and GitLab.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="file-text"></i></span><h3>Markdown-native editor</h3><p>Write in plain Markdown with a hybrid live preview — what you type and what you get, side by side.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="users"></i></span><h3>Real-time multiplayer</h3><p>CRDT-powered editing with live presence — work in the same doc as your team, with no merge conflicts.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="sparkles"></i></span><h3>AI editing</h3><p>Rewrite, summarize, expand, or translate any selection — AI assistance built right into the editor.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="presentation"></i></span><h3>Slides &amp; presenter mode</h3><p>Turn any Markdown doc into a deck and present it full-screen — no separate slides tool needed.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="table"></i></span><h3>Spreadsheets</h3><p>Build tables with a real formula engine — <code>SUM</code>, <code>AVERAGE</code>, <code>IF</code> and more, right in your docs.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="history"></i></span><h3>Version history</h3><p>Automatic snapshots of every document — review earlier versions and roll back any time.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="share-2"></i></span><h3>Team namespaces &amp; sharing</h3><p>Organize work in team namespaces and share with permission-based access you stay in control of.</p></div>
+      <div class="feat"><span class="mark"><i data-lucide="image"></i></span><h3>Image uploads</h3><p>Drop images straight into your Markdown — hosted and rendered inline, right where you need them.</p></div>
     </div>
   </div>
 </section>
@@ -427,9 +426,9 @@
     <div class="sec-label lg no-hash">How it works</div>
     <h2 class="sec-head solo">Three steps from <em>draft</em> to <em>done.</em></h2>
     <div class="step-row">
-      <div class="step"><span class="n">01</span><h3>Bring it in</h3><p>Paste Markdown, import <code>.md</code> or <code>.docx</code>, or sync a file straight from GitHub or GitLab.</p></div>
-      <div class="step"><span class="n">02</span><h3>Review together</h3><p>Humans and AI comment, suggest edits, and highlight in real time — threaded, resolvable, and fully tracked.</p></div>
-      <div class="step"><span class="n">03</span><h3>Resolve &amp; ship</h3><p>Accept changes, check the version diff, then export or sync back to git — formatting and history intact.</p></div>
+      <div class="step"><span class="n">01</span><h3>Write in Markdown</h3><p>Open a doc and write in plain Markdown with a live preview — no formatting toolbar to fight.</p></div>
+      <div class="step"><span class="n">02</span><h3>Collaborate &amp; edit with AI</h3><p>Invite your team for real-time multiplayer editing, and let AI rewrite, summarize, or translate as you go.</p></div>
+      <div class="step"><span class="n">03</span><h3>Present &amp; share</h3><p>Turn it into slides, drop in spreadsheets, then share with permission-based access — all from one doc.</p></div>
     </div>
   </div>
 </section>
@@ -439,7 +438,7 @@
   <div class="wrap">
     <div class="sec-label lg no-hash">Why we're different</div>
     <h2 class="sec-head solo">Everything a Markdown workspace does — <em>plus an AI layer.</em></h2>
-    <p class="why-lead">You already know the workflow: live Markdown editing, slide decks, diagrams, version history. <b>DotMD does all of it — then adds AI as a real collaborator</b> that reviews your docs, suggests edits, and prepares your slides alongside you. Same workspace you love, with intelligence built in.</p>
+    <p class="why-lead">Most Markdown tools just edit text. <b>DotMD is a full workspace — real-time multiplayer, AI editing, slides, and spreadsheets</b>, all in plain Markdown. Same format you already love, with everything you need built in.</p>
 
     <div class="cmp-wrap">
       <table class="cmp">
@@ -452,17 +451,12 @@
         </thead>
         <tbody>
           <tr>
-            <td>Real-time Markdown editing</td>
+            <td>Plain-Markdown editing</td>
             <td class="col-them"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
             <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
           </tr>
           <tr>
-            <td>Slide decks from Markdown</td>
-            <td class="col-them"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
-            <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
-          </tr>
-          <tr>
-            <td>Diagrams, math &amp; code blocks</td>
+            <td>Hybrid live preview</td>
             <td class="col-them"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
             <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
           </tr>
@@ -472,22 +466,22 @@
             <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
           </tr>
           <tr class="ai">
-            <td>AI review participant <span class="ai-pill">AI</span></td>
+            <td>Real-time multiplayer <span class="ai-pill">LIVE</span></td>
             <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
             <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
           </tr>
           <tr class="ai">
-            <td>AI-prepared slide decks <span class="ai-pill">AI</span></td>
+            <td>AI editing — rewrite, summarize, translate <span class="ai-pill">AI</span></td>
             <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
             <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
           </tr>
           <tr class="ai">
-            <td>AI suggested edits &amp; rewrites <span class="ai-pill">AI</span></td>
+            <td>Slides &amp; presenter mode <span class="ai-pill">DECK</span></td>
             <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
             <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
           </tr>
           <tr class="ai">
-            <td>AI summaries &amp; answers <span class="ai-pill">AI</span></td>
+            <td>Spreadsheets with formulas <span class="ai-pill">SHEETS</span></td>
             <td class="col-them"><span class="no"><i data-lucide="minus" class="i-sm"></i></span></td>
             <td class="col-us"><span class="yes"><i data-lucide="check" class="i-sm"></i></span></td>
           </tr>
@@ -538,42 +532,32 @@
         <div class="price-tag">$0<span class="per"> /mo</span></div>
         <ul>
           <li><i data-lucide="check" class="i-sm"></i>5 documents</li>
-          <li><i data-lucide="check" class="i-sm"></i>2 collaborators</li>
-          <li><i data-lucide="check" class="i-sm"></i>Basic rendering</li>
+          <li><i data-lucide="check" class="i-sm"></i>1 collaborator per doc</li>
+          <li><i data-lucide="check" class="i-sm"></i>Last 10 version snapshots</li>
         </ul>
         <button type="button" class="pbtn" disabled>Coming soon</button>
       </div>
       <div class="price pop">
         <span class="price-pill"><i data-lucide="star" class="i-sm"></i>Most popular</span>
-        <div class="price-name">Pro</div>
-        <div class="price-tag"><span class="was">$10</span>$5<span class="per"> /user/mo</span></div>
+        <div class="price-name">Premium</div>
+        <div class="price-tag">$5<span class="per"> /user/mo</span></div>
         <ul>
-          <li><i data-lucide="check" class="i-sm"></i>100 documents / month</li>
+          <li><i data-lucide="check" class="i-sm"></i>Unlimited documents</li>
           <li><i data-lucide="check" class="i-sm"></i>Unlimited collaborators</li>
-          <li><i data-lucide="check" class="i-sm"></i>AI participant mode</li>
-          <li><i data-lucide="check" class="i-sm"></i>Version history</li>
+          <li><i data-lucide="check" class="i-sm"></i>Full version history</li>
+          <li><i data-lucide="check" class="i-sm"></i>Team namespaces</li>
+          <li><i data-lucide="check" class="i-sm"></i>AI included</li>
         </ul>
         <button type="button" class="pbtn solid" disabled>Coming soon</button>
       </div>
       <div class="price">
         <div class="price-name">Team</div>
-        <div class="price-tag">$25<span class="per"> /user/mo</span></div>
+        <div class="price-tag">$5<span class="per"> /seat/mo</span></div>
         <ul>
-          <li><i data-lucide="check" class="i-sm"></i>Unlimited documents</li>
-          <li><i data-lucide="check" class="i-sm"></i>SSO &amp; admin controls</li>
-          <li><i data-lucide="check" class="i-sm"></i>API access</li>
-          <li><i data-lucide="check" class="i-sm"></i>Priority support</li>
-        </ul>
-        <button type="button" class="pbtn" disabled>Coming soon</button>
-      </div>
-      <div class="price">
-        <div class="price-name">Enterprise</div>
-        <div class="price-tag">Custom</div>
-        <ul>
-          <li><i data-lucide="check" class="i-sm"></i>On-prem deployment</li>
-          <li><i data-lucide="check" class="i-sm"></i>Custom integrations</li>
-          <li><i data-lucide="check" class="i-sm"></i>SLA guarantees</li>
-          <li><i data-lucide="check" class="i-sm"></i>Dedicated CSM</li>
+          <li><i data-lucide="check" class="i-sm"></i>Everything in Premium</li>
+          <li><i data-lucide="check" class="i-sm"></i>Minimum 2 seats</li>
+          <li><i data-lucide="check" class="i-sm"></i>Seat management</li>
+          <li><i data-lucide="check" class="i-sm"></i>Email distribution</li>
         </ul>
         <button type="button" class="pbtn" disabled>Coming soon</button>
       </div>
@@ -598,7 +582,7 @@
 
 <footer>
   <div class="wrap foot-in">
-    <div>Dot<span class="c">MD</span> — real-time Markdown collaboration & review · © 2026</div>
+    <div>Dot<span class="c">MD</span> — the Markdown-native productivity suite · © 2026</div>
   </div>
 </footer>
 
